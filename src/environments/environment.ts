@@ -2,8 +2,21 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {CredentialsInterceptor} from "../app/services/credentials.interceptor";
+
 export const environment = {
-  production: false
+  production: false,
+  apiServer: 'http://127.0.0.1:8080',
+  app: '/airtime',
+  endpoint: '/api',
+  title: 'Dev',
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: CredentialsInterceptor, multi: true}
+  ],
+  showPre: true,
+  linearStepper: false,
+  baseHref: '/online-matriculation/'
 };
 
 /*
