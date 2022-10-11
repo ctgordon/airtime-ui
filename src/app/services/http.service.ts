@@ -1,28 +1,25 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {environment} from '../../environments/environment';
 import {Observable, throwError} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {catchError, retry} from 'rxjs/operators';
 
 @Injectable()
 export class HttpService {
-  private readonly token!: string;
+  private readonly token!: string | null;
   private readonly headers = {};
   private readonly fileUploadHeaders = {};
   retry = 1;
 
   constructor(private http: HttpClient) {
-    /*if (document.head.querySelector('meta[name=\'_csrf\']') !== null) {
-        this.token = document.head.querySelector('meta[name=\'_csrf\']').getAttribute('content');
-        this.headers = {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'X-CSRF-TOKEN': this.token,
-        };
-        this.fileUploadHeaders = {
-            'X-CSRF-TOKEN': this.token
-        };
-    }*/
+    const csrf = document.head.querySelector('meta[name=\'_csrf\']');
+    if (csrf !== null) {
+      this.token = csrf.getAttribute('content');
+      this.headers = {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'X-CSRF-TOKEN': this.token,
+      };
+    }
   }
 
   setImpersonationHeader() {

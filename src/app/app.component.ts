@@ -12,6 +12,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public title!: string;
   public year!: string;
   public error!: boolean;
+  public nav!: Array<{ link: string; title: string }>;
 
   private interval: any;
   private serverTestSubscription!: Subscription;
@@ -31,6 +32,24 @@ export class AppComponent implements OnInit, OnDestroy {
     this.interval = setInterval(() => {
       this.refreshData();
     }, 300000);
+
+    this.nav = [
+      {
+        title: 'Home', link: '/'
+      },
+      {
+        title: 'Airports', link: '/airports'
+      },
+      {
+        title: 'Aircraft', link: '/aircraft'
+      },
+      {
+        title: 'Aircraft types', link: '/aircraft-types'
+      },
+      {
+        title: 'People', link: '/people'
+      }
+    ];
   }
 
   refreshData() {
@@ -47,7 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
       complete: () => {
         this.error = false;
       }
-    })
+    });
   }
 
   checkAppVersion() {

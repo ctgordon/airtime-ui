@@ -7,10 +7,23 @@ import {HttpService} from "./services/http.service";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ReactiveFormsModule} from "@angular/forms";
+import { AircraftComponent } from './components/aircraft/aircraft.component';
+import { HomeComponent } from './components/home/home.component';
+import {RouterModule} from "@angular/router";
+import {APP_BASE_HREF} from "@angular/common";
+import {environment} from "../environments/environment";
+import { AirportsComponent } from './components/airports/airports.component';
+import { PeopleComponent } from './components/people/people.component';
+import { AircraftTypesComponent } from './components/aircraft-types/aircraft-types.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AircraftComponent,
+    HomeComponent,
+    AirportsComponent,
+    PeopleComponent,
+    AircraftTypesComponent
   ],
   imports: [
     BrowserModule,
@@ -19,10 +32,12 @@ import {ReactiveFormsModule} from "@angular/forms";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   providers: [
-    HttpService
+    HttpService,
+    {provide: APP_BASE_HREF, useValue: environment.baseHref}
   ],
   bootstrap: [AppComponent]
 })
