@@ -1,5 +1,8 @@
 export class TableConfig {
   headers!: Array<string>
-  data!: Array<any>;
+  data!: Array<{
+    obj: any,
+    values: any[],
+  }>
   editable!: boolean;
 }

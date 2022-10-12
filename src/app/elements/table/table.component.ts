@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TableConfig} from "../../model/table.config";
 
 @Component({
@@ -9,6 +9,7 @@ import {TableConfig} from "../../model/table.config";
 export class TableComponent implements OnInit {
 
   @Input() config!: TableConfig;
+  @Output() emitter: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() {
   }
@@ -16,4 +17,7 @@ export class TableComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  output(dataSet: any) {
+    this.emitter.emit(dataSet);
+  }
 }

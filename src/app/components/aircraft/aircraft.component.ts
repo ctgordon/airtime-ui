@@ -6,6 +6,8 @@ import {environment} from "../../../environments/environment";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AircraftType} from "../../model/aircraftType";
 import {TableConfig} from "../../model/table.config";
+import {MatDialog} from "@angular/material/dialog";
+import {EditAircraftModalComponent} from "../../modals/edit-aircraft-modal/edit-aircraft-modal.component";
 
 @Component({
   selector: 'app-aircraft',
@@ -19,14 +21,14 @@ export class AircraftComponent implements OnInit, OnDestroy {
   public aircraftForm!: FormGroup;
   public tableConfig: TableConfig = {
     data: [],
-    headers: ['Tail number', 'Type'],
+    headers: ['ID', 'Tail number', 'Type'],
     editable: true,
   };
 
   private aircraftSubscription!: Subscription;
   private aircraftTypesSubscription!: Subscription;
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -46,7 +48,10 @@ export class AircraftComponent implements OnInit, OnDestroy {
         this.tableConfig.data = [];
 
         this.aircraftList.forEach(aircraft => {
-          this.tableConfig.data.push([aircraft.tailNumber, aircraft.aircraftType.type]);
+          this.tableConfig.data.push({
+            obj: aircraft,
+            values: [aircraft.id, aircraft.tailNumber, aircraft.aircraftType.type]
+          });
         });
       },
       error: (e) => {
@@ -67,6 +72,19 @@ export class AircraftComponent implements OnInit, OnDestroy {
       },
       complete: () => {
       }
+    });
+  }
+
+  editAircraft(aircraft: Aircraft) {
+    this.tailNumber.patchValue(aircraft.tailNumber);
+    this.aircraftType.patchValue(aircraft.aircraftType.id);
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(EditAircraftModalComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
     });
   }
 

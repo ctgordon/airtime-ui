@@ -10,10 +10,10 @@
     <tbody>
     <tr *ngFor="let row of config?.data; let i = index;">
       <td>{{i + 1}}</td>
-      <td *ngFor="let data of row">{{data}}</td>
+      <td *ngFor="let data of row?.values">{{data}}</td>
       <td *ngIf="config?.editable">
         <div class="d-grid">
-          <button class="btn btn-outline-primary btn-sm">Edit</button>
+          <button class="btn btn-outline-primary btn-sm" (click)="output(row?.obj)">Edit</button>
         </div>
       </td>
     </tr>

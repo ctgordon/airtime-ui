@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {Subscription} from "rxjs";
 import {HttpService} from "../../services/http.service";
@@ -10,7 +10,7 @@ import {TableConfig} from "../../model/table.config";
   templateUrl: './aircraft-types.component.html',
   styleUrls: ['./aircraft-types.component.scss']
 })
-export class AircraftTypesComponent implements OnInit {
+export class AircraftTypesComponent implements OnInit, OnDestroy {
 
   public aircraftTypesList !: AircraftType[];
   public tableConfig: TableConfig = {
@@ -21,7 +21,8 @@ export class AircraftTypesComponent implements OnInit {
 
   private aircraftTypesSubscription!: Subscription;
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService) {
+  }
 
   ngOnInit(): void {
     this.getAircraftTypes();
@@ -35,7 +36,7 @@ export class AircraftTypesComponent implements OnInit {
         this.tableConfig.data = [];
 
         this.aircraftTypesList.forEach(aircraftType => {
-          this.tableConfig.data.push([aircraftType.id, aircraftType.type]);
+          this.tableConfig.data.push({obj: aircraftType, values: [aircraftType.id, aircraftType.type]});
         });
       },
       error: (e) => {
@@ -44,5 +45,11 @@ export class AircraftTypesComponent implements OnInit {
       complete: () => {
       }
     });
+  }
+
+  ngOnDestroy() {
+    if (typeof this.aircraftTypesSubscription !== undefined) {
+      this.aircraftTypesSubscription.unsubscribe();
+    }
   }
 }

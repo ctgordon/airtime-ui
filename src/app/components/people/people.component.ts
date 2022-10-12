@@ -35,7 +35,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
         this.tableConfig.data = [];
 
         this.people.forEach(person => {
-          this.tableConfig.data.push([person.name, person.moniker, person.role]);
+          this.tableConfig.data.push({obj: person, values: [person.name, person.moniker, person.role]});
         });
       },
       error: (e) => {

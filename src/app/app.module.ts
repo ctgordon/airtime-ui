@@ -16,6 +16,11 @@ import { AirportsComponent } from './components/airports/airports.component';
 import { PeopleComponent } from './components/people/people.component';
 import { AircraftTypesComponent } from './components/aircraft-types/aircraft-types.component';
 import { TableComponent } from './elements/table/table.component';
+import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
+import {MatButtonModule} from "@angular/material/button";
+import {EditAircraftModalComponent} from "./modals/edit-aircraft-modal/edit-aircraft-modal.component";
+import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -25,7 +30,8 @@ import { TableComponent } from './elements/table/table.component';
     AirportsComponent,
     PeopleComponent,
     AircraftTypesComponent,
-    TableComponent
+    TableComponent,
+    EditAircraftModalComponent
   ],
   imports: [
     BrowserModule,
@@ -35,11 +41,16 @@ import { TableComponent } from './elements/table/table.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [
     HttpService,
-    {provide: APP_BASE_HREF, useValue: environment.baseHref}
+    {provide: APP_BASE_HREF, useValue: environment.baseHref},
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
   ],
   bootstrap: [AppComponent]
 })

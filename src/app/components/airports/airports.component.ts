@@ -36,7 +36,10 @@ export class AirportsComponent implements OnInit, OnDestroy {
         this.tableConfig.data = [];
 
         this.airportList.forEach(airport => {
-          this.tableConfig.data.push([airport.countryName, airport.countryCode, airport.airportName, airport.airportCode, airport.cityName, airport.latitude, airport.longitude]);
+          this.tableConfig.data.push({
+            obj: airport,
+            values: [airport.countryName, airport.countryCode, airport.airportName, airport.airportCode, airport.cityName, airport.latitude, airport.longitude]
+          });
         });
       },
       error: (e) => {
