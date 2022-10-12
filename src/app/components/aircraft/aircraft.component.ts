@@ -5,6 +5,7 @@ import {Subscription} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AircraftType} from "../../model/aircraftType";
+import {TableConfig} from "../../model/table.config";
 
 @Component({
   selector: 'app-aircraft',
@@ -16,6 +17,11 @@ export class AircraftComponent implements OnInit, OnDestroy {
   public aircraftList!: Aircraft[];
   public aircraftTypesList!: AircraftType[];
   public aircraftForm!: FormGroup;
+  public tableConfig: TableConfig = {
+    data: [],
+    headers: ['Tail number', 'Type'],
+    editable: true,
+  };
 
   private aircraftSubscription!: Subscription;
   private aircraftTypesSubscription!: Subscription;
@@ -36,6 +42,12 @@ export class AircraftComponent implements OnInit, OnDestroy {
     this.aircraftSubscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft/`).subscribe({
       next: (v) => {
         this.aircraftList = v;
+
+        this.tableConfig.data = [];
+
+        this.aircraftList.forEach(aircraft => {
+          this.tableConfig.data.push([aircraft.tailNumber, aircraft.aircraftType.type]);
+        });
       },
       error: (e) => {
         console.error(e)

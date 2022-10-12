@@ -15,6 +15,7 @@ import {environment} from "../environments/environment";
 import { AirportsComponent } from './components/airports/airports.component';
 import { PeopleComponent } from './components/people/people.component';
 import { AircraftTypesComponent } from './components/aircraft-types/aircraft-types.component';
+import { TableComponent } from './elements/table/table.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AircraftTypesComponent } from './components/aircraft-types/aircraft-typ
     HomeComponent,
     AirportsComponent,
     PeopleComponent,
-    AircraftTypesComponent
+    AircraftTypesComponent,
+    TableComponent
   ],
   imports: [
     BrowserModule,

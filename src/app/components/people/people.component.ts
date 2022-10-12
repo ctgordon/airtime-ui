@@ -3,6 +3,7 @@ import {Person} from "../../model/person";
 import {environment} from "../../../environments/environment";
 import {Subscription} from "rxjs";
 import {HttpService} from "../../services/http.service";
+import {TableConfig} from "../../model/table.config";
 
 @Component({
   selector: 'app-people',
@@ -12,6 +13,11 @@ import {HttpService} from "../../services/http.service";
 export class PeopleComponent implements OnInit, OnDestroy {
 
   public people!: Person[];
+  public tableConfig: TableConfig = {
+    data: [],
+    headers: ['Name', 'Moniker', 'Role'],
+    editable: true,
+  };
 
   private subscription!: Subscription;
 
@@ -26,6 +32,11 @@ export class PeopleComponent implements OnInit, OnDestroy {
     this.subscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/people/`).subscribe({
       next: (v) => {
         this.people = v;
+        this.tableConfig.data = [];
+
+        this.people.forEach(person => {
+          this.tableConfig.data.push([person.name, person.moniker, person.role]);
+        });
       },
       error: (e) => {
         console.error(e)

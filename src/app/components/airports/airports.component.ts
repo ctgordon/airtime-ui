@@ -3,6 +3,7 @@ import {Subscription} from "rxjs";
 import {HttpService} from "../../services/http.service";
 import {environment} from "../../../environments/environment";
 import {Airport} from "../../model/airport";
+import {TableConfig} from "../../model/table.config";
 
 @Component({
   selector: 'app-airports',
@@ -12,6 +13,11 @@ import {Airport} from "../../model/airport";
 export class AirportsComponent implements OnInit, OnDestroy {
 
   public airportList!: Airport[];
+  public tableConfig: TableConfig = {
+    data: [],
+    headers: ['Country name', 'Country code', 'Airport name', 'Airport code', 'City', 'Lat', 'Long'],
+    editable: true,
+  };
 
   private subscription!: Subscription;
 
@@ -26,6 +32,12 @@ export class AirportsComponent implements OnInit, OnDestroy {
     this.subscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/airports/`).subscribe({
       next: (v) => {
         this.airportList = v;
+
+        this.tableConfig.data = [];
+
+        this.airportList.forEach(airport => {
+          this.tableConfig.data.push([airport.countryName, airport.countryCode, airport.airportName, airport.airportCode, airport.cityName, airport.latitude, airport.longitude]);
+        });
       },
       error: (e) => {
         console.error(e)

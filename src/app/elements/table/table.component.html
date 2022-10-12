@@ -1,0 +1,22 @@
+<div class="table-responsive">
+  <table *ngIf="config" class="table table-bordered table-striped table-hover">
+    <thead>
+    <tr>
+      <th>N<sup>o</sup></th>
+      <th *ngFor="let header of config?.headers">{{header}}</th>
+      <th *ngIf="config?.editable"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let row of config?.data; let i = index;">
+      <td>{{i + 1}}</td>
+      <td *ngFor="let data of row">{{data}}</td>
+      <td *ngIf="config?.editable">
+        <div class="d-grid">
+          <button class="btn btn-outline-primary btn-sm">Edit</button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
