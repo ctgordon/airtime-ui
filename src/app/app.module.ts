@@ -18,9 +18,10 @@ import { AircraftTypesComponent } from './components/aircraft-types/aircraft-typ
 import { TableComponent } from './elements/table/table.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
-import {EditAircraftModalComponent} from "./modals/edit-aircraft-modal/edit-aircraft-modal.component";
+import {EditAircraftModalComponent} from "./dialogs/edit-aircraft-modal/edit-aircraft-modal.component";
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {MatInputModule} from "@angular/material/input";
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     HttpService,

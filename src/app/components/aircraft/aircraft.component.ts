@@ -7,7 +7,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AircraftType} from "../../model/aircraftType";
 import {TableConfig} from "../../model/table.config";
 import {MatDialog} from "@angular/material/dialog";
-import {EditAircraftModalComponent} from "../../modals/edit-aircraft-modal/edit-aircraft-modal.component";
+import {EditAircraftModalComponent} from "../../dialogs/edit-aircraft-modal/edit-aircraft-modal.component";
 
 @Component({
   selector: 'app-aircraft',
@@ -24,6 +24,7 @@ export class AircraftComponent implements OnInit, OnDestroy {
     headers: ['ID', 'Tail number', 'Type'],
     editable: true,
   };
+  public loading: boolean = false;
 
   private aircraftSubscription!: Subscription;
   private aircraftTypesSubscription!: Subscription;
@@ -41,6 +42,7 @@ export class AircraftComponent implements OnInit, OnDestroy {
   }
 
   getAircraft() {
+    this.loading = true;
     this.aircraftSubscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft/`).subscribe({
       next: (v) => {
         this.aircraftList = v;
@@ -53,6 +55,7 @@ export class AircraftComponent implements OnInit, OnDestroy {
             values: [aircraft.id, aircraft.tailNumber, aircraft.aircraftType.type]
           });
         });
+        this.loading = false;
       },
       error: (e) => {
         console.error(e)
@@ -97,6 +100,7 @@ export class AircraftComponent implements OnInit, OnDestroy {
   }
 
   save() {
+    this.loading = true;
     if (this.aircraftType.value) {
       const id = this.aircraftType.value;
       const type = this.aircraftTypesList.find(it => it.id = id);
@@ -108,6 +112,7 @@ export class AircraftComponent implements OnInit, OnDestroy {
     this.httpService.postData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft/`, this.aircraftForm.value).subscribe({
       next: (v) => {
         console.log(v);
+        this.getAircraft();
       },
       error: (e) => {
         console.error(e)

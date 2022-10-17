@@ -1,5 +1,47 @@
-<h1>Aircraft</h1>
+<div class="d-flex justify-content-center">
+  <mat-spinner *ngIf="loading"></mat-spinner>
+</div>
 
-<app-table [config]="tableConfig" (emitter)="editAircraft($event)"></app-table>
+<ng-container *ngIf="!loading">
+  <h1>Aircraft</h1>
 
-<button class="btn btn-primary" (click)="openDialog()">Open dialog</button>
+  <app-table [config]="tableConfig" (emitter)="editAircraft($event)"></app-table>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="border border-dark p-3 mb-2 border-opacity-25">
+        <form [formGroup]="aircraftForm">
+          <div class="mb-3">
+            <label for="tailNumber" class="form-label">Tail number</label>
+            <input [ngClass]="{'is-invalid':tailNumber.touched && !tailNumber.valid}" type="text" class="form-control"
+                   id="tailNumber"
+                   placeholder="G-EVIE" [formControl]="tailNumber" aria-describedby="tailNumberFeedback">
+            <div *ngIf="tailNumber.touched && !tailNumber.valid" id="tailNumberFeedback" class="invalid-feedback">
+              Please enter a valid tail number.
+            </div>
+
+          </div>
+
+          <div class="mb-3">
+            <label for="aircraftType" class="form-label">Aircraft type</label>
+            <select class="form-select" [ngClass]="{'is-invalid': !aircraftType.valid}" id="aircraftType"
+                    aria-describedby="aircraftTypeFeedback" [formControl]="aircraftType">
+              <option selected disabled value="">Choose...</option>
+              <option *ngFor="let aircraftType of aircraftTypesList"
+                      [value]="aircraftType?.id">{{aircraftType?.type}}</option>
+            </select>
+            <div *ngIf="aircraftType.touched && !aircraftType.valid" id="aircraftTypeFeedback" class="invalid-feedback">
+              Please select a valid aircraft type.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <button class="btn btn-primary" (click)="save()" [disabled]="!aircraftForm.valid">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!--<button class="btn btn-primary" (click)="openDialog()">Open dialog</button>-->
+</ng-container>

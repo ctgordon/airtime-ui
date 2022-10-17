@@ -1,3 +1,26 @@
 <h1>Aircraft types</h1>
 
 <app-table [config]="tableConfig"></app-table>
+
+<div class="row">
+  <div class="col-12">
+    <div class="border border-dark p-3 mb-2 border-opacity-25">
+      <form [formGroup]="aircraftTypeForm">
+        <div class="mb-3">
+          <label for="tailNumber" class="form-label">Aircraft type</label>
+          <input [ngClass]="{'is-invalid':aircraftType.touched && !aircraftType.valid}" type="text" class="form-control"
+                 id="tailNumber"
+                 placeholder="PA28-161" [formControl]="aircraftType" aria-describedby="tailNumberFeedback">
+          <div *ngIf="aircraftType.touched && !aircraftType.valid" id="tailNumberFeedback" class="invalid-feedback">
+            Please enter a valid aircraft type.
+          </div>
+
+        </div>
+
+        <div class="mb-3">
+          <button class="btn btn-primary" (click)="save()" [disabled]="!aircraftTypeForm.valid">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
