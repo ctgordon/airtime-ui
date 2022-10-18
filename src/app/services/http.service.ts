@@ -47,6 +47,20 @@ export class HttpService {
     );
   }
 
+  getAirportInfo(airportCode: string): Observable<any> {
+    const headers = {
+      'X-RapidAPI-Key': '0a12d6ec6emsh0f3bd2565f4656bp1ad243jsnd2231800c67c',
+      'X-RapidAPI-Host': 'airport-info.p.rapidapi.com'
+    };
+    return this.http.get(`https://airport-info.p.rapidapi.com/airport?icao=${airportCode}`, {
+      withCredentials: false,
+      headers
+    }).pipe(
+      retry(this.retry),
+      catchError(this.handleError)
+    );
+  }
+
   deleteData(url: string): Observable<any> {
     this.setImpersonationHeader();
     return this.http.delete(url, {withCredentials: false, headers: this.headers}).pipe(

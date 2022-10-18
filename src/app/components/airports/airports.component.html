@@ -1,3 +1,11 @@
-<h1>Airports</h1>
+<div class="d-flex justify-content-center">
+  <mat-spinner *ngIf="loading"></mat-spinner>
+</div>
 
-<app-table [config]="tableConfig"></app-table>
+<ng-container *ngIf="!loading">
+  <h1>Airports</h1>
+
+  <app-table [config]="tableConfig"></app-table>
+
+  <!--<button class="btn btn-primary" (click)="getAirportInfo()">Get airport info</button>-->
+</ng-container>
