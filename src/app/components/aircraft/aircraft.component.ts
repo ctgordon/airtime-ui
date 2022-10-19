@@ -36,7 +36,7 @@ export class AircraftComponent implements OnInit, OnDestroy {
     this.getAircraft();
     this.getAircraftTypes();
     this.aircraftForm = new FormGroup({
-      tailNumber: new FormControl('G-BOVK', [Validators.required]),
+      tailNumber: new FormControl(null, [Validators.required]),
       aircraftType: new FormControl(null, [Validators.required])
     });
   }
@@ -101,6 +101,7 @@ export class AircraftComponent implements OnInit, OnDestroy {
 
   save() {
     this.loading = true;
+
     if (this.aircraftType.value) {
       const id = this.aircraftType.value;
       const type = this.aircraftTypesList.find(it => it.id = id);
@@ -110,12 +111,13 @@ export class AircraftComponent implements OnInit, OnDestroy {
     }
 
     this.httpService.postData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft/`, this.aircraftForm.value).subscribe({
-      next: (v) => {
-        console.log(v);
+      next: () => {
+        this.aircraftForm.reset();
         this.getAircraft();
       },
       error: (e) => {
         console.error(e)
+        this.loading = false;
       },
       complete: () => {
         console.log('Getting here');
@@ -124,10 +126,10 @@ export class AircraftComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (typeof this.aircraftSubscription !== undefined) {
+    if (typeof this.aircraftSubscription !== 'undefined') {
       this.aircraftSubscription.unsubscribe();
     }
-    if (typeof this.aircraftTypesSubscription !== undefined) {
+    if (typeof this.aircraftTypesSubscription !== 'undefined') {
       this.aircraftTypesSubscription.unsubscribe();
     }
   }

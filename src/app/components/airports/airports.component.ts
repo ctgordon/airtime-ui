@@ -111,10 +111,10 @@ export class AirportsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (typeof this.subscription !== undefined) {
+    if (typeof this.subscription !== 'undefined') {
       this.subscription.unsubscribe();
     }
-    if (typeof this.airportInfoSubscription !== undefined) {
+    if (typeof this.airportInfoSubscription !== 'undefined') {
       this.airportInfoSubscription.unsubscribe();
     }
   }

@@ -101,7 +101,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
       person.name = this.name.value;
       person.moniker = this.moniker.value;
       const filtered = this.personRoles.find(role => role.id === Number(this.personRole.value));
-      if (filtered && typeof filtered !== undefined) {
+      if (filtered && typeof filtered !== 'undefined') {
         person.personRole = filtered
       }
     }
@@ -130,7 +130,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (typeof this.peopleSubscription !== undefined) {
+    if (typeof this.peopleSubscription !== 'undefined') {
       this.peopleSubscription.unsubscribe();
     }
   }

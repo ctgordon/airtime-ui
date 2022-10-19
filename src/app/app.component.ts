@@ -104,7 +104,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (typeof this.serverTestSubscription !== undefined) {
+    if (typeof this.serverTestSubscription !== 'undefined') {
       this.serverTestSubscription.unsubscribe();
     }
   }

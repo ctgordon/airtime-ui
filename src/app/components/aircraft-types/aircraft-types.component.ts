@@ -95,7 +95,7 @@ export class AircraftTypesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (typeof this.aircraftTypesSubscription !== undefined) {
+    if (typeof this.aircraftTypesSubscription !== 'undefined') {
       this.aircraftTypesSubscription.unsubscribe();
     }
   }
