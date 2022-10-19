@@ -22,6 +22,7 @@ import {EditAircraftModalComponent} from "./dialogs/edit-aircraft-modal/edit-air
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { FlightsComponent } from './components/flights/flights.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     PeopleComponent,
     AircraftTypesComponent,
     TableComponent,
-    EditAircraftModalComponent
+    EditAircraftModalComponent,
+    FlightsComponent
   ],
   imports: [
     BrowserModule,

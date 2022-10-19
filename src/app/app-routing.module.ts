@@ -5,11 +5,17 @@ import {HomeComponent} from "./components/home/home.component";
 import {AirportsComponent} from "./components/airports/airports.component";
 import {PeopleComponent} from "./components/people/people.component";
 import {AircraftTypesComponent} from "./components/aircraft-types/aircraft-types.component";
+import {FlightsComponent} from "./components/flights/flights.component";
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'flights',
+    component: FlightsComponent,
     pathMatch: 'full'
   },
   {

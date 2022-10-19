@@ -38,6 +38,9 @@ export class AppComponent implements OnInit, OnDestroy {
         title: 'Home', link: '/'
       },
       {
+        title: 'Flights', link: '/flightList'
+      },
+      {
         title: 'Airports', link: '/airports'
       },
       {

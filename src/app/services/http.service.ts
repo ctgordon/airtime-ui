@@ -80,7 +80,6 @@ export class HttpService {
     );
   }
 
-
   update(url: string, data: any): Observable<any> {
     this.setImpersonationHeader();
     return this.http.put(url, data, {headers: this.headers, withCredentials: false}).pipe(
