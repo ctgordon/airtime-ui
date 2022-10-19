@@ -21,6 +21,7 @@ export class AircraftTypesComponent implements OnInit, OnDestroy {
     editable: true,
   };
   public aircraftTypeForm: FormGroup = new FormGroup({
+      id: new FormControl(null),
       aircraftType: new FormControl(null, [Validators.required])
     }
   );
@@ -55,19 +56,26 @@ export class AircraftTypesComponent implements OnInit, OnDestroy {
     });
   }
 
+  editAircraftType(aircraftType: AircraftType) {
+    this.id.patchValue(aircraftType.id);
+    this.aircraftType.patchValue(aircraftType.type);
+  }
+
   save() {
     this.loading = true;
 
     const aircraftType: AircraftType = {id: 0, type: ''}
 
     if (this.aircraftTypeForm.valid) {
+      aircraftType.id = this.id.value;
       aircraftType.type = this.aircraftType.value;
     }
 
     this.httpService.postData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft-types/`, aircraftType).subscribe({
       next: (v) => {
-        console.log(v);
         this.getAircraftTypes();
+        this.aircraftTypeForm.reset();
+        this.loading = false;
       },
       error: (e) => {
         console.error(e)
@@ -76,6 +84,10 @@ export class AircraftTypesComponent implements OnInit, OnDestroy {
         console.log('Getting here');
       }
     });
+  }
+
+  get id(): FormControl {
+    return this.aircraftTypeForm.get('id') as FormControl;
   }
 
   get aircraftType(): FormControl {

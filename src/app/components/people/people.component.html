@@ -1,3 +1,56 @@
-<h1>People</h1>
+<div class="d-flex justify-content-center">
+  <mat-spinner *ngIf="loading"></mat-spinner>
+</div>
 
-<app-table [config]="tableConfig"></app-table>
+<ng-container *ngIf="!loading">
+  <h1>People</h1>
+
+  <app-table [config]="tableConfig" (emitter)="editPerson($event)"></app-table>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="border border-dark p-3 mb-2 border-opacity-25">
+        <form [formGroup]="peopleForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input [ngClass]="{'is-invalid':name.touched && !name.valid}" type="text" class="form-control"
+                   id="name"
+                   placeholder="Gordon Ramsay" [formControl]="name" aria-describedby="tailNumberFeedback">
+            <div *ngIf="name.touched && !name.valid" id="nameFeedback" class="invalid-feedback">
+              Please enter a valid name.
+            </div>
+
+          </div>
+
+          <div class="mb-3">
+            <label for="moniker" class="form-label">Moniker</label>
+            <input [ngClass]="{'is-invalid':moniker.touched && !moniker.valid}" type="text" class="form-control"
+                   id="moniker"
+                   placeholder="G.Ramsay" [formControl]="moniker" aria-describedby="monikerFeedback">
+            <div *ngIf="moniker.touched && !moniker.valid" id="monikerFeedback" class="invalid-feedback">
+              Please enter a valid moniker.
+            </div>
+
+          </div>
+
+          <div class="mb-3">
+            <label for="personRole" class="form-label">Role</label>
+            <select class="form-select" [ngClass]="{'is-invalid': !personRole.valid}" id="personRole"
+                    aria-describedby="personRoleFeedback" [formControl]="personRole">
+              <option selected disabled value="">Choose...</option>
+              <option *ngFor="let personRole of personRoles"
+                      [value]="personRole?.id">{{personRole?.role}}</option>
+            </select>
+            <div *ngIf="personRole.touched && !personRole.valid" id="personRoleFeedback" class="invalid-feedback">
+              Please select a valid person role.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <button class="btn btn-primary" (click)="save()" [disabled]="!peopleForm.valid">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-container>
