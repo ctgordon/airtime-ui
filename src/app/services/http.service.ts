@@ -5,6 +5,7 @@ import {catchError, retry} from 'rxjs/operators';
 import {Aircraft} from "../model/aircraft";
 import {environment} from "../../environments/environment";
 import {Person} from "../model/person";
+import {Airport} from "../model/airport";
 
 @Injectable()
 export class HttpService {
@@ -44,6 +45,10 @@ export class HttpService {
 
   getAircraft(): Observable<Array<Aircraft>> {
     return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft/`);
+  }
+
+  getAirports(): Observable<Array<Airport>> {
+    return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/airports/`);
   }
 
   getPeople(): Observable<Array<Person>> {

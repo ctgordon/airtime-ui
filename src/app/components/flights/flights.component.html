@@ -21,7 +21,91 @@
           <app-validated-dropdown *ngIf="peopleList" [params]="peopleDropdown"></app-validated-dropdown>
 
           <app-validated-dropdown *ngIf="aircraftList" [params]="aircraftDropdown"></app-validated-dropdown>
-          
+
+          <app-validated-dropdown *ngIf="airportList" [params]="departureAirportDropdown"></app-validated-dropdown>
+
+          <app-validated-dropdown *ngIf="airportList" [params]="arrivalAirportDropdown"></app-validated-dropdown>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <mat-form-field appearance="fill">
+                <mat-label>Departure date</mat-label>
+                <input matInput [matDatepicker]="departureDatePicker" [formControl]="departureDate">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #departureDatePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <mat-form-field appearance="fill">
+                <mat-label>Departure time</mat-label>
+                <input matInput type="time" [formControl]="departureTime">
+                <button *ngIf="departureTime?.value" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="departureTime?.patchValue('')">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <mat-form-field appearance="fill">
+                <mat-label>Arrival date</mat-label>
+                <input matInput [matDatepicker]="arrivalDatePicker" [formControl]="arrivalDate">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="arrivalDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #arrivalDatePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <mat-form-field appearance="fill">
+                <mat-label>Arrival time</mat-label>
+                <input matInput type="time" [formControl]="arrivalTime">
+                <button *ngIf="arrivalTime?.value" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="arrivalTime?.patchValue('')">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6 mb-3">
+              <mat-form-field appearance="fill">
+                <mat-label>Take offs</mat-label>
+                <input matInput type="number" [formControl]="takeOffs">
+                <button *ngIf="takeOffs?.value" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="takeOffs?.patchValue('')">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+
+            <div class="col-6 mb-3">
+              <mat-form-field appearance="fill">
+                <mat-label>Landings</mat-label>
+                <input matInput type="number" [formControl]="landings">
+                <button *ngIf="landings?.value" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="landings?.patchValue('')">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="remarks" class="form-label">Remarks</label>
+            <input type="text" class="form-control"
+                   id="remarks" [formControl]="remarks">
+          </div>
+
           <div class="mb-3">
             <button class="btn btn-primary" (click)="save()" [disabled]="!flightForm.valid">Save</button>
           </div>

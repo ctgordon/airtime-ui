@@ -8,6 +8,7 @@ import {Subscription} from "rxjs";
 import {Aircraft} from "../../model/aircraft";
 import {Person} from "../../model/person";
 import {ValidatedDropdown} from "../../model/validated.dropdown";
+import {Airport} from "../../model/airport";
 
 @Component({
   selector: 'app-flights',
@@ -28,22 +29,28 @@ export class FlightsComponent implements OnInit, OnDestroy {
     pilotInCommand: new FormControl(null, [Validators.required]),
     departureAirport: new FormControl(null, [Validators.required]),
     arrivalAirport: new FormControl(null, [Validators.required]),
-    departureDatetime: new FormControl(null, [Validators.required]),
-    arrivalDatetime: new FormControl(null, [Validators.required]),
+    departureDate: new FormControl(null, [Validators.required]),
+    arrivalDate: new FormControl(null, [Validators.required]),
+    departureTime: new FormControl('12:00', [Validators.required]),
+    arrivalTime: new FormControl('13:00', [Validators.required]),
     remarks: new FormControl(null),
-    takeOffs: new FormControl(null),
-    landings: new FormControl(null),
+    takeOffs: new FormControl(0, [Validators.min(0)]),
+    landings: new FormControl(0, [Validators.min(0)]),
   });
   public flightList!: Flight[];
   public aircraftList!: Aircraft[];
   public peopleList!: Person[];
+  public airportList!: Airport[];
 
   public peopleDropdown!: ValidatedDropdown;
   public aircraftDropdown!: ValidatedDropdown;
+  public arrivalAirportDropdown!: ValidatedDropdown;
+  public departureAirportDropdown!: ValidatedDropdown;
 
   private aircraftSubscription!: Subscription;
   private flightSubscription!: Subscription;
   private peopleSubscription!: Subscription;
+  private airportSubscription!: Subscription;
 
   constructor(private httpService: HttpService) {
   }
@@ -51,6 +58,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getFlights();
     this.getAircraft();
+    this.getAirports();
     this.getPeople();
   }
 
@@ -94,6 +102,36 @@ export class FlightsComponent implements OnInit, OnDestroy {
       },
       error: err => {
         console.error(err);
+      },
+      complete: () => {
+      }
+    });
+  }
+
+  getAirports() {
+    this.airportSubscription = this.httpService.getAirports().subscribe({
+      next: airports => {
+        this.airportList = airports;
+        this.airportList.sort((a, b) => a.airportName.localeCompare(b.airportName));
+        this.arrivalAirportDropdown = {
+          formControl: this.arrivalAirport,
+          id: 'arrivalAirport',
+          label: 'Arrival airport',
+          list: this.airportList,
+          optionLabel: 'airportName',
+          optionValue: 'id'
+        };
+        this.departureAirportDropdown = {
+          formControl: this.departureAirport,
+          id: 'departureAirport',
+          label: 'Departure airport',
+          list: this.airportList,
+          optionLabel: 'airportName',
+          optionValue: 'id'
+        };
+      },
+      error: (e) => {
+        console.error(e);
       },
       complete: () => {
       }
@@ -153,12 +191,20 @@ export class FlightsComponent implements OnInit, OnDestroy {
     return this.flightForm.get('arrivalAirport') as FormControl;
   }
 
-  get departureDatetime(): FormControl {
-    return this.flightForm.get('departureDatetime') as FormControl;
+  get departureDate(): FormControl {
+    return this.flightForm.get('departureDate') as FormControl;
   }
 
-  get arrivalDatetime(): FormControl {
-    return this.flightForm.get('arrivalDatetime') as FormControl;
+  get arrivalDate(): FormControl {
+    return this.flightForm.get('arrivalDate') as FormControl;
+  }
+
+  get departureTime(): FormControl {
+    return this.flightForm.get('departureTime') as FormControl;
+  }
+
+  get arrivalTime(): FormControl {
+    return this.flightForm.get('arrivalTime') as FormControl;
   }
 
   get remarks(): FormControl {
@@ -174,7 +220,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    const subscriptions = [this.aircraftSubscription, this.flightSubscription, this.peopleSubscription];
+    const subscriptions = [this.aircraftSubscription, this.flightSubscription, this.peopleSubscription, this.airportSubscription];
 
     subscriptions.forEach(subscription => {
       if (typeof subscription !== "undefined") {

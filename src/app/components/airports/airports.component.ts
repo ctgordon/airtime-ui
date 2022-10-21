@@ -36,9 +36,9 @@ export class AirportsComponent implements OnInit, OnDestroy {
 
   getAirports() {
     this.loading = true;
-    this.subscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/airports/`).subscribe({
-      next: (v) => {
-        this.airportList = v;
+    this.subscription = this.httpService.getAirports().subscribe({
+      next: airports => {
+        this.airportList = airports;
 
         this.tableConfig.data = [];
 
