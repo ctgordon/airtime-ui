@@ -43,7 +43,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
 
   getPeople() {
     this.loading = true;
-    this.peopleSubscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/people/`).subscribe({
+    this.peopleSubscription = this.httpService.getPeople().subscribe({
       next: (v) => {
         this.people = v;
         this.tableConfig.data = [];

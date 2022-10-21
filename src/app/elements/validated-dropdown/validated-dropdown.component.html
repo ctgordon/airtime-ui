@@ -1,0 +1,13 @@
+<div *ngIf="params && params?.list" class="mb-3">
+  <label [htmlFor]="params?.id" class="form-label">{{params?.label}}</label>
+  <select class="form-select" [ngClass]="{'is-invalid': !params?.formControl?.valid}" [id]="params?.id"
+          [attr.aria-describedby]="params?.id + 'Feedback'" [formControl]="params.formControl">
+    <option selected disabled value="">Choose...</option>
+    <option *ngFor="let item of params?.list"
+            [value]="item[params.optionValue]" [innerHTML]="item[params.optionLabel]"></option>
+  </select>
+  <div *ngIf="params?.formControl?.touched && !params?.formControl?.valid" [id]="params?.id + 'Feedback'"
+       class="invalid-feedback">
+    Please select an answer.
+  </div>
+</div>

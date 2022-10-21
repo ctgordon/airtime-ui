@@ -6,6 +6,8 @@ import {HttpService} from "../../services/http.service";
 import {environment} from "../../../environments/environment";
 import {Subscription} from "rxjs";
 import {Aircraft} from "../../model/aircraft";
+import {Person} from "../../model/person";
+import {ValidatedDropdown} from "../../model/validated.dropdown";
 
 @Component({
   selector: 'app-flights',
@@ -29,12 +31,19 @@ export class FlightsComponent implements OnInit, OnDestroy {
     departureDatetime: new FormControl(null, [Validators.required]),
     arrivalDatetime: new FormControl(null, [Validators.required]),
     remarks: new FormControl(null),
+    takeOffs: new FormControl(null),
+    landings: new FormControl(null),
   });
   public flightList!: Flight[];
   public aircraftList!: Aircraft[];
+  public peopleList!: Person[];
+
+  public peopleDropdown!: ValidatedDropdown;
+  public aircraftDropdown!: ValidatedDropdown;
 
   private aircraftSubscription!: Subscription;
   private flightSubscription!: Subscription;
+  private peopleSubscription!: Subscription;
 
   constructor(private httpService: HttpService) {
   }
@@ -42,6 +51,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getFlights();
     this.getAircraft();
+    this.getPeople();
   }
 
   getFlights() {
@@ -69,13 +79,47 @@ export class FlightsComponent implements OnInit, OnDestroy {
   }
 
   getAircraft() {
-    this.loading = true;
-    this.aircraftSubscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft/`).subscribe({
-      next: (data) => {
-        this.aircraftList = data;
+    this.aircraftSubscription = this.httpService.getAircraft().subscribe({
+      next: aircraft => {
+        this.aircraftList = aircraft;
+        this.aircraftList.sort((a, b) => a.tailNumber.localeCompare(b.tailNumber));
+        this.aircraftDropdown = {
+          formControl: this.aircraft,
+          id: 'aircraft',
+          label: 'Aircraft',
+          list: this.aircraftList,
+          optionLabel: 'tailNumber',
+          optionValue: 'id'
+        };
       },
-      error: (e) => {
-        console.error(e)
+      error: err => {
+        console.error(err);
+      },
+      complete: () => {
+      }
+    });
+  }
+
+  getPeople() {
+    this.peopleSubscription = this.httpService.getPeople().subscribe({
+      next: people => {
+        this.peopleList = people;
+        this.peopleList.sort((a, b) => a.name.localeCompare(b.name));
+        this.peopleDropdown = {
+          formControl: this.pilotInCommand,
+          id: 'pilotInCommand',
+          label: 'Pilot in command',
+          list: this.peopleList,
+          optionLabel: 'moniker',
+          optionValue: 'id'
+        };
+        const defaultOption = this.peopleList.find(it => it.moniker === 'SELF');
+        if (defaultOption) {
+          this.pilotInCommand.patchValue(defaultOption.id);
+        }
+      },
+      error: err => {
+        console.error(err);
       },
       complete: () => {
       }
@@ -121,8 +165,16 @@ export class FlightsComponent implements OnInit, OnDestroy {
     return this.flightForm.get('remarks') as FormControl;
   }
 
+  get takeOffs(): FormControl {
+    return this.flightForm.get('takeOffs') as FormControl;
+  }
+
+  get landings(): FormControl {
+    return this.flightForm.get('landings') as FormControl;
+  }
+
   ngOnDestroy() {
-    const subscriptions = [this.aircraftSubscription, this.flightSubscription];
+    const subscriptions = [this.aircraftSubscription, this.flightSubscription, this.peopleSubscription];
 
     subscriptions.forEach(subscription => {
       if (typeof subscription !== "undefined") {

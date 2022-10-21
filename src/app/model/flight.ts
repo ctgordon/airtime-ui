@@ -11,4 +11,6 @@ export class Flight {
   departureDatetime!: string;
   arrivalDatetime!: string;
   remarks!: string;
+  takeOffs!: number;
+  landings!: number;
 }

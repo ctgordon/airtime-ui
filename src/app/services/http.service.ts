@@ -1,7 +1,10 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {observable, Observable, throwError} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {catchError, retry} from 'rxjs/operators';
+import {Aircraft} from "../model/aircraft";
+import {environment} from "../../environments/environment";
+import {Person} from "../model/person";
 
 @Injectable()
 export class HttpService {
@@ -37,6 +40,14 @@ export class HttpService {
             this.fileUploadHeaders['x-impersonate'] = impersonate;
         }
     }*/
+  }
+
+  getAircraft(): Observable<Array<Aircraft>> {
+    return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft/`);
+  }
+
+  getPeople(): Observable<Array<Person>> {
+    return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/people/`);
   }
 
   getData(url: string): Observable<any> {

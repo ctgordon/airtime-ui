@@ -23,6 +23,7 @@ import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { FlightsComponent } from './components/flights/flights.component';
+import { ValidatedDropdownComponent } from './elements/validated-dropdown/validated-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { FlightsComponent } from './components/flights/flights.component';
     AircraftTypesComponent,
     TableComponent,
     EditAircraftModalComponent,
-    FlightsComponent
+    FlightsComponent,
+    ValidatedDropdownComponent
   ],
   imports: [
     BrowserModule,

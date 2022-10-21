@@ -5,6 +5,12 @@
 <ng-container *ngIf="!loading">
   <h1>Flights</h1>
 
+  <div class="row">
+    <div class="col-12">
+      <pre>{{flightForm?.value | json}}</pre>
+    </div>
+  </div>
+
   <app-table [config]="tableConfig" (emitter)="editFlight($event)"></app-table>
 
   <div class="row">
@@ -12,30 +18,10 @@
       <div class="border border-dark p-3 mb-2 border-opacity-25">
         <form [formGroup]="flightForm">
 
-          <!--<div class="mb-3">
-            <label for="tailNumber" class="form-label">Tail number</label>
-            <input [ngClass]="{'is-invalid':tailNumber.touched && !tailNumber.valid}" type="text" class="form-control"
-                   id="tailNumber"
-                   placeholder="G-EVIE" [formControl]="tailNumber" aria-describedby="tailNumberFeedback">
-            <div *ngIf="tailNumber.touched && !tailNumber.valid" id="tailNumberFeedback" class="invalid-feedback">
-              Please enter a valid tail number.
-            </div>
+          <app-validated-dropdown *ngIf="peopleList" [params]="peopleDropdown"></app-validated-dropdown>
 
-          </div>-->
-
-          <!--<div class="mb-3">
-            <label for="aircraftType" class="form-label">Aircraft type</label>
-            <select class="form-select" [ngClass]="{'is-invalid': !aircraftType.valid}" id="aircraftType"
-                    aria-describedby="aircraftTypeFeedback" [formControl]="aircraftType">
-              <option selected disabled value="">Choose...</option>
-              <option *ngFor="let aircraftType of aircraftTypesList"
-                      [value]="aircraftType?.id">{{aircraftType?.type}}</option>
-            </select>
-            <div *ngIf="aircraftType.touched && !aircraftType.valid" id="aircraftTypeFeedback" class="invalid-feedback">
-              Please select a valid aircraft type.
-            </div>
-          </div>-->
-
+          <app-validated-dropdown *ngIf="aircraftList" [params]="aircraftDropdown"></app-validated-dropdown>
+          
           <div class="mb-3">
             <button class="btn btn-primary" (click)="save()" [disabled]="!flightForm.valid">Save</button>
           </div>
