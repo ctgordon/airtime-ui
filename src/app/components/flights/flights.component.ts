@@ -29,8 +29,8 @@ export class FlightsComponent implements OnInit, OnDestroy {
     pilotInCommand: new FormControl(null, [Validators.required]),
     departureAirport: new FormControl(null, [Validators.required]),
     arrivalAirport: new FormControl(null, [Validators.required]),
-    departureDate: new FormControl(null, [Validators.required]),
-    arrivalDate: new FormControl(null, [Validators.required]),
+    departureDate: new FormControl('12/10/2022', [Validators.required]),
+    arrivalDate: new FormControl('12/10/2022', [Validators.required]),
     departureTime: new FormControl('12:00', [Validators.required]),
     arrivalTime: new FormControl('13:00', [Validators.required]),
     remarks: new FormControl(null),
@@ -56,6 +56,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.flightList = [];
     this.getFlights();
     this.getAircraft();
     this.getAirports();
@@ -69,10 +70,12 @@ export class FlightsComponent implements OnInit, OnDestroy {
         this.flightList = data;
         this.tableConfig.data = [];
 
+        console.log(this.flightList);
+
         this.flightList.forEach(flight => {
           this.tableConfig.data.push({
             obj: flight,
-            values: [flight.id, null, null, null, null, null, null, null, null, null, null]
+            values: [flight.id, null, null, null, null, null, flight.departureAirport.airportName, flight.arrivalAirport.airportName, flight.departureDatetime, flight.arrivalDatetime, flight.pilotInCommand.name]
           });
         });
         this.loading = false;
@@ -82,6 +85,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
       },
       complete: () => {
         this.loading = false;
+        console.log(this.tableConfig);
       }
     });
   }
@@ -167,8 +171,38 @@ export class FlightsComponent implements OnInit, OnDestroy {
   editFlight(flight: Flight) {
   }
 
-  save() {
+  buildDtoFromSelectedValue(control: FormControl, objects: any): any {
+    if (control.value) {
+      const selected = control.value;
+      const filtered = objects.find((it: { id: any; }) => it.id = selected);
+      if (filtered) {
+        control.patchValue(filtered);
+      }
+    }
+  }
 
+  save() {
+    this.loading = true;
+
+    if (this.flightForm.value) {
+      this.buildDtoFromSelectedValue(this.pilotInCommand, this.peopleList);
+      this.buildDtoFromSelectedValue(this.aircraft, this.aircraftList);
+      this.buildDtoFromSelectedValue(this.departureAirport, this.airportList);
+      this.buildDtoFromSelectedValue(this.arrivalAirport, this.airportList);
+    }
+
+    this.httpService.postData(`${environment.apiServer}${environment.app}${environment.endpoint}/flight/`, this.flightForm.value).subscribe({
+      next: () => {
+        this.flightForm.reset();
+      },
+      error: (e) => {
+        console.error(e)
+        this.loading = false;
+      },
+      complete: () => {
+        console.log('Flight saved');
+      }
+    });
   }
 
   get id(): FormControl {

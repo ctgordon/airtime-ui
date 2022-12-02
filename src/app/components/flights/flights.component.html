@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <app-table [config]="tableConfig" (emitter)="editFlight($event)"></app-table>
+  <app-table *ngIf="flightList" [config]="tableConfig" (emitter)="editFlight($event)"></app-table>
 
   <div class="row">
     <div class="col-12">
