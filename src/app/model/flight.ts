@@ -13,4 +13,5 @@ export class Flight {
   remarks!: string;
   takeOffs!: number;
   landings!: number;
+  flightTime!: string;
 }

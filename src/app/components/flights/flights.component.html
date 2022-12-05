@@ -5,13 +5,61 @@
 <ng-container *ngIf="!loading">
   <h1>Flights</h1>
 
-  <div class="row">
-    <div class="col-12">
-      <pre>{{flightForm?.value | json}}</pre>
+  <div class="row mb-3">
+    <div class="col-md-6 col-xs-12">
+      <dl>
+        <dt>Total flights</dt>
+        <dd>{{flightList?.length}}</dd>
+      </dl>
+      <dl>
+        <dt>Time since last flight</dt>
+        <dd>{{timeSinceLastFlight}}</dd>
+      </dl>
     </div>
   </div>
 
-  <app-table *ngIf="flightList" [config]="tableConfig" (emitter)="editFlight($event)"></app-table>
+  <ng-container *ngIf="flightList">
+    <div *ngFor="let flight of flightList" class="card mb-3">
+      <div class="card-header d-flex align-items-center">
+        <i class="bi bi-calendar"></i><span class="px-2">{{flight?.departureDatetime | date : 'fullDate'}}</span>
+        <div class="d-flex ms-auto"><i class="bi bi-airplane"></i> <span class="px-2">{{flight?.aircraft?.tailNumber}}</span></div>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{flight?.departureAirport?.airportName}} to {{flight?.arrivalAirport?.airportName}}</h5>
+
+        <p class="card-text"><i class="bi bi-clock"></i> <span class="px-2">{{flight?.flightTime}}</span></p>
+
+        <div class="row mb-3">
+          <div class="col-md-6 col-xs-12">
+            <dl>
+              <dt>Aircraft</dt>
+              <dd>{{flight?.aircraft?.aircraftType?.type}} {{flight?.aircraft?.tailNumber}}</dd>
+            </dl>
+          </div>
+          <div class="col-md-6 col-xs-12">
+            <dl>
+              <dt>Pilot in command</dt>
+              <dd>{{flight?.pilotInCommand?.moniker}}</dd>
+            </dl>
+          </div>
+          <div class="col-md-6 col-xs-12">
+            <dl>
+              <dt>Departure</dt>
+              <dd>{{flight?.departureDatetime | date : 'EEEE, MMMM d, y, h:mm'}}</dd>
+            </dl>
+          </div>
+          <div class="col-md-6 col-xs-12">
+            <dl>
+              <dt>Arrival</dt>
+              <dd>{{flight?.arrivalDatetime | date : 'EEEE, MMMM d, y, h:mm'}}</dd>
+            </dl>
+          </div>
+        </div>
+
+        <a href="#" class="btn btn-primary">Edit flight</a>
+      </div>
+    </div>
+  </ng-container>
 
   <div class="row">
     <div class="col-12">
@@ -28,75 +76,43 @@
 
           <div class="row">
             <div class="col-12 mb-3">
-              <mat-form-field appearance="fill">
-                <mat-label>Departure date</mat-label>
-                <input matInput [matDatepicker]="departureDatePicker" [formControl]="departureDate">
-                <mat-hint>DD/MM/YYYY</mat-hint>
-                <mat-datepicker-toggle matSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #departureDatePicker></mat-datepicker>
-              </mat-form-field>
+              <label for="departureDate" class="form-label">Departure date</label>
+              <input id="departureDate" type="date" class="form-control" [formControl]="departureDate">
             </div>
           </div>
 
           <div class="row">
             <div class="col-12 mb-3">
-              <mat-form-field appearance="fill">
-                <mat-label>Departure time</mat-label>
-                <input matInput type="time" [formControl]="departureTime">
-                <button *ngIf="departureTime?.value" matSuffix mat-icon-button aria-label="Clear"
-                        (click)="departureTime?.patchValue('')">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </mat-form-field>
+              <label for="arrivalDate" class="form-label">Arrival date</label>
+              <input id="arrivalDate" type="date" class="form-control" [formControl]="arrivalDate">
             </div>
           </div>
 
           <div class="row">
             <div class="col-12 mb-3">
-              <mat-form-field appearance="fill">
-                <mat-label>Arrival date</mat-label>
-                <input matInput [matDatepicker]="arrivalDatePicker" [formControl]="arrivalDate">
-                <mat-hint>DD/MM/YYYY</mat-hint>
-                <mat-datepicker-toggle matSuffix [for]="arrivalDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #arrivalDatePicker></mat-datepicker>
-              </mat-form-field>
+              <label for="departureTime" class="form-label">Departure time</label>
+              <input id="departureTime" type="time" class="form-control" [formControl]="departureTime">
             </div>
           </div>
 
           <div class="row">
             <div class="col-12 mb-3">
-              <mat-form-field appearance="fill">
-                <mat-label>Arrival time</mat-label>
-                <input matInput type="time" [formControl]="arrivalTime">
-                <button *ngIf="arrivalTime?.value" matSuffix mat-icon-button aria-label="Clear"
-                        (click)="arrivalTime?.patchValue('')">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </mat-form-field>
+              <label for="arrivalTime" class="form-label">Arrival time</label>
+              <input id="arrivalTime" type="time" class="form-control" [formControl]="arrivalTime">
             </div>
           </div>
 
           <div class="row">
-            <div class="col-6 mb-3">
-              <mat-form-field appearance="fill">
-                <mat-label>Take offs</mat-label>
-                <input matInput type="number" [formControl]="takeOffs">
-                <button *ngIf="takeOffs?.value" matSuffix mat-icon-button aria-label="Clear"
-                        (click)="takeOffs?.patchValue('')">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </mat-form-field>
+            <div class="col-12 mb-3">
+              <label for="takeOffs" class="form-label">Take offs</label>
+              <input id="takeOffs" type="number" min="0" class="form-control" [formControl]="takeOffs">
             </div>
+          </div>
 
-            <div class="col-6 mb-3">
-              <mat-form-field appearance="fill">
-                <mat-label>Landings</mat-label>
-                <input matInput type="number" [formControl]="landings">
-                <button *ngIf="landings?.value" matSuffix mat-icon-button aria-label="Clear"
-                        (click)="landings?.patchValue('')">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </mat-form-field>
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="landings" class="form-label">Landings</label>
+              <input id="landings" type="number" min="0" class="form-control" [formControl]="landings">
             </div>
           </div>
 

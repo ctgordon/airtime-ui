@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {TableConfig} from "../../model/table.config";
-import {Form, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Flight} from "../../model/flight";
 import {HttpService} from "../../services/http.service";
 import {environment} from "../../../environments/environment";
@@ -9,6 +8,7 @@ import {Aircraft} from "../../model/aircraft";
 import {Person} from "../../model/person";
 import {ValidatedDropdown} from "../../model/validated.dropdown";
 import {Airport} from "../../model/airport";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-flights',
@@ -18,19 +18,14 @@ import {Airport} from "../../model/airport";
 export class FlightsComponent implements OnInit, OnDestroy {
 
   public loading: boolean = false;
-  public tableConfig: TableConfig = {
-    data: [],
-    headers: ['ID', 'Date', 'Type', 'Registration', 'Pilot in command', 'From', 'To', 'Departure time', 'Arrival time', 'Dual', 'PIC'],
-    editable: true,
-  };
   public flightForm: FormGroup = new FormGroup({
     id: new FormControl(null),
-    aircraft: new FormControl(null, [Validators.required]),
-    pilotInCommand: new FormControl(null, [Validators.required]),
-    departureAirport: new FormControl(null, [Validators.required]),
-    arrivalAirport: new FormControl(null, [Validators.required]),
-    departureDate: new FormControl('12/10/2022', [Validators.required]),
-    arrivalDate: new FormControl('12/10/2022', [Validators.required]),
+    aircraft: new FormControl(17, [Validators.required]),
+    pilotInCommand: new FormControl(1, [Validators.required]),
+    departureAirport: new FormControl(8, [Validators.required]),
+    arrivalAirport: new FormControl(8, [Validators.required]),
+    departureDate: new FormControl('2022-12-16', [Validators.required]),
+    arrivalDate: new FormControl('2022-12-16', [Validators.required]),
     departureTime: new FormControl('12:00', [Validators.required]),
     arrivalTime: new FormControl('13:00', [Validators.required]),
     remarks: new FormControl(null),
@@ -46,6 +41,8 @@ export class FlightsComponent implements OnInit, OnDestroy {
   public aircraftDropdown!: ValidatedDropdown;
   public arrivalAirportDropdown!: ValidatedDropdown;
   public departureAirportDropdown!: ValidatedDropdown;
+  public dateTimeFormat: string = 'YYYY-MM-DD HH:mm:ss.SSS'
+  public timeSinceLastFlight!: string;
 
   private aircraftSubscription!: Subscription;
   private flightSubscription!: Subscription;
@@ -68,16 +65,15 @@ export class FlightsComponent implements OnInit, OnDestroy {
     this.flightSubscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/flights/`).subscribe({
       next: (data) => {
         this.flightList = data;
-        this.tableConfig.data = [];
-
-        console.log(this.flightList);
 
         this.flightList.forEach(flight => {
-          this.tableConfig.data.push({
-            obj: flight,
-            values: [flight.id, null, null, null, null, null, flight.departureAirport.airportName, flight.arrivalAirport.airportName, flight.departureDatetime, flight.arrivalDatetime, flight.pilotInCommand.name]
-          });
+          const diff = moment(flight.arrivalDatetime, 'YYYY-MM-DD hh:mm:ss').diff(moment(flight.departureDatetime, 'YYYY-MM-DD hh:mm:ss'));
+          flight.flightTime = moment.utc(moment.duration(diff).asMilliseconds()).format('HH:mm');
         });
+        this.flightList.sort((a, b) => b.departureDatetime.localeCompare(a.departureDatetime));
+
+        this.timeSinceLastFlight = moment(this.flightList[0].arrivalDatetime).fromNow();
+
         this.loading = false;
       },
       error: (e) => {
@@ -85,7 +81,6 @@ export class FlightsComponent implements OnInit, OnDestroy {
       },
       complete: () => {
         this.loading = false;
-        console.log(this.tableConfig);
       }
     });
   }
@@ -174,24 +169,25 @@ export class FlightsComponent implements OnInit, OnDestroy {
   buildDtoFromSelectedValue(control: FormControl, objects: any): any {
     if (control.value) {
       const selected = control.value;
-      const filtered = objects.find((it: { id: any; }) => it.id = selected);
-      if (filtered) {
-        control.patchValue(filtered);
-      }
+      return objects.find((it: { id: any; }) => it.id = selected);
     }
   }
 
   save() {
     this.loading = true;
 
+    const flight: Flight = new Flight();
+
     if (this.flightForm.value) {
-      this.buildDtoFromSelectedValue(this.pilotInCommand, this.peopleList);
-      this.buildDtoFromSelectedValue(this.aircraft, this.aircraftList);
-      this.buildDtoFromSelectedValue(this.departureAirport, this.airportList);
-      this.buildDtoFromSelectedValue(this.arrivalAirport, this.airportList);
+      flight.pilotInCommand = this.buildDtoFromSelectedValue(this.pilotInCommand, this.peopleList);
+      flight.aircraft = this.buildDtoFromSelectedValue(this.aircraft, this.aircraftList);
+      flight.departureAirport = this.buildDtoFromSelectedValue(this.departureAirport, this.airportList);
+      flight.arrivalAirport = this.buildDtoFromSelectedValue(this.arrivalAirport, this.airportList);
+      flight.departureDatetime = moment(`${this.departureDate.value} ${this.departureTime.value}`).format(this.dateTimeFormat).toString();
+      flight.arrivalDatetime = moment(`${this.arrivalDate.value}T${this.arrivalTime.value}`).format(this.dateTimeFormat).toString();
     }
 
-    this.httpService.postData(`${environment.apiServer}${environment.app}${environment.endpoint}/flight/`, this.flightForm.value).subscribe({
+    this.httpService.postData(`${environment.apiServer}${environment.app}${environment.endpoint}/flight/`, flight).subscribe({
       next: () => {
         this.flightForm.reset();
       },
@@ -200,7 +196,8 @@ export class FlightsComponent implements OnInit, OnDestroy {
         this.loading = false;
       },
       complete: () => {
-        console.log('Flight saved');
+        this.getFlights();
+        this.loading = false;
       }
     });
   }
