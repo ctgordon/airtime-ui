@@ -29,8 +29,7 @@ export class AircraftComponent implements OnInit, OnDestroy {
   private aircraftSubscription!: Subscription;
   private aircraftTypesSubscription!: Subscription;
 
-  constructor(private httpService: HttpService, public dialog: MatDialog) {
-  }
+  constructor(private httpService: HttpService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getAircraft();

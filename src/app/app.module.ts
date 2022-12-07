@@ -27,6 +27,7 @@ import {ValidatedDropdownComponent} from './elements/validated-dropdown/validate
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 import {MatIconModule} from "@angular/material/icon";
+import { SpreadsheetComponent } from './components/spreadsheet/spreadsheet.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {MatIconModule} from "@angular/material/icon";
     TableComponent,
     EditAircraftModalComponent,
     FlightsComponent,
-    ValidatedDropdownComponent
+    ValidatedDropdownComponent,
+    SpreadsheetComponent
   ],
   imports: [
     BrowserModule,
