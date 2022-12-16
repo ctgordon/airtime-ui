@@ -28,6 +28,8 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 import {MatIconModule} from "@angular/material/icon";
 import { SpreadsheetComponent } from './components/spreadsheet/spreadsheet.component';
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { SpreadsheetComponent } from './components/spreadsheet/spreadsheet.compo
     EditAircraftModalComponent,
     FlightsComponent,
     ValidatedDropdownComponent,
-    SpreadsheetComponent
+    SpreadsheetComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,8 @@ import { SpreadsheetComponent } from './components/spreadsheet/spreadsheet.compo
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule
   ],
   providers: [
     HttpService,

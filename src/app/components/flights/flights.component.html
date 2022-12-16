@@ -26,48 +26,46 @@
 
   <ng-container *ngIf="flightList">
 
-    <table *ngIf="flightList.length" class="table table-sm table-bordered table-striped">
-      <thead>
-      <tr>
-        <th colspan="12" class="text-center">Overarching thing</th>
-      </tr>
-      <tr>
-        <th></th>
-        <th colspan="2" class="text-center">Aircraft</th>
-        <th colspan="9" class="text-center"></th>
-      </tr>
-      <tr>
-        <th>N<sup>o</sup></th>
-        <th>Aircraft</th>
-        <th>Registration</th>
-        <th>PIC</th>
-        <th>Co-pilot</th>
-        <th>From</th>
-        <th>To</th>
-        <th>Departure date</th>
-        <th>Departure time</th>
-        <th>Arrival date</th>
-        <th>Arrival time</th>
-        <th>Remarks</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let flight of flightList; let i = index;">
-        <td>{{i + 1}}</td>
-        <td>{{flight?.aircraft?.aircraftType?.type}}</td>
-        <td>{{flight?.aircraft?.tailNumber}}</td>
-        <td>{{flight?.pilotInCommand?.moniker}}</td>
-        <td></td>
-        <td>{{flight?.departureAirport?.airportName}}</td>
-        <td>{{flight?.arrivalAirport?.airportName}}</td>
-        <td>{{flight?.departureDatetime | date : 'longDate'}}</td>
-        <td>{{flight?.departureDatetime | date : 'HH:mm'}}</td>
-        <td>{{flight?.arrivalDatetime | date : 'longDate'}}</td>
-        <td>{{flight?.arrivalDatetime | date : 'HH:mm'}}</td>
-        <td>{{flight?.remarks}}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table *ngIf="flightList.length" class="table table-sm table-bordered table-striped">
+        <thead>
+        <tr>
+          <th>N<sup>o</sup></th>
+          <th>Aircraft</th>
+          <th>Registration</th>
+          <th>PIC</th>
+          <th>Co-pilot</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Departure date</th>
+          <th>Departure time</th>
+          <th>Arrival date</th>
+          <th>Arrival time</th>
+          <th>Remarks</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let flight of flightList; let i = index;">
+          <td>{{i + 1}}</td>
+          <td>{{flight?.aircraft?.aircraftType?.type}}</td>
+          <td>{{flight?.aircraft?.tailNumber}}</td>
+          <td>{{flight?.pilotInCommand?.moniker}}</td>
+          <td></td>
+          <td>{{flight?.departureAirport?.airportName}}</td>
+          <td>{{flight?.arrivalAirport?.airportName}}</td>
+          <td>{{flight?.departureDatetime | date : 'longDate'}}</td>
+          <td>{{flight?.departureDatetime | date : 'HH:mm'}}</td>
+          <td>{{flight?.arrivalDatetime | date : 'longDate'}}</td>
+          <td>{{flight?.arrivalDatetime | date : 'HH:mm'}}</td>
+          <td>{{flight?.remarks}}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="confirmDeleteFlight(flight)">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
     <div *ngFor="let flight of flightList" class="card mb-3">
       <div class="card-header d-flex align-items-center">

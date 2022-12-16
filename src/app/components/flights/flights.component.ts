@@ -9,6 +9,10 @@ import {Person} from "../../model/person";
 import {ValidatedDropdown} from "../../model/validated.dropdown";
 import {Airport} from "../../model/airport";
 import * as moment from 'moment';
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ConfirmDialogComponent} from "../confirm-dialog/confirm-dialog.component";
+import {ConfirmDialog} from "../../model/confirm.dialog";
 
 @Component({
   selector: 'app-flights',
@@ -49,7 +53,10 @@ export class FlightsComponent implements OnInit, OnDestroy {
   private peopleSubscription!: Subscription;
   private airportSubscription!: Subscription;
 
-  constructor(private httpService: HttpService) {
+  constructor(
+    private httpService: HttpService,
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -60,19 +67,25 @@ export class FlightsComponent implements OnInit, OnDestroy {
     this.getPeople();
   }
 
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
+
   getFlights() {
     this.loading = true;
     this.flightSubscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/flights/`).subscribe({
       next: (data) => {
         this.flightList = data;
 
-        this.flightList.forEach(flight => {
-          const diff = moment(flight.arrivalDatetime, 'YYYY-MM-DD hh:mm:ss').diff(moment(flight.departureDatetime, 'YYYY-MM-DD hh:mm:ss'));
-          flight.flightTime = moment.utc(moment.duration(diff).asMilliseconds()).format('HH:mm');
-        });
-        this.flightList.sort((a, b) => b.departureDatetime.localeCompare(a.departureDatetime));
+        if (this.flightList.length) {
+          this.flightList.forEach(flight => {
+            const diff = moment(flight.arrivalDatetime, 'YYYY-MM-DD hh:mm:ss').diff(moment(flight.departureDatetime, 'YYYY-MM-DD hh:mm:ss'));
+            flight.flightTime = moment.utc(moment.duration(diff).asMilliseconds()).format('HH:mm');
+          });
+          this.flightList.sort((a, b) => b.departureDatetime.localeCompare(a.departureDatetime));
 
-        this.timeSinceLastFlight = moment(this.flightList[0].arrivalDatetime).fromNow();
+          this.timeSinceLastFlight = moment(this.flightList[0].arrivalDatetime).fromNow();
+        }
 
         this.loading = false;
       },
@@ -164,6 +177,39 @@ export class FlightsComponent implements OnInit, OnDestroy {
   }
 
   editFlight(flight: Flight) {
+  }
+
+  deleteFlight(flight: Flight) {
+    this.loading = true;
+    this.httpService.deleteData(`${environment.apiServer}${environment.app}${environment.endpoint}/flight/`, flight).subscribe({
+      next: () => {
+        this.openSnackBar('Flight deleted', 'Ok!')
+      },
+      error: (e) => {
+        console.error(e)
+        this.loading = false;
+        this.openSnackBar('Flight not deleted', 'Ok!')
+      },
+      complete: () => {
+        this.getFlights();
+        this.loading = false;
+      }
+    });
+  }
+
+  confirmDeleteFlight(flight: Flight) {
+
+    const dialogConfig = new MatDialogConfig();
+    const dialogData = new ConfirmDialog("Confirm action", "Are you sure you want to delete this flight?");
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = dialogData;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.deleteFlight(flight);
+      }
+    });
   }
 
   buildDtoFromSelectedValue(control: FormControl, objects: any): any {

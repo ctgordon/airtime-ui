@@ -77,9 +77,9 @@ export class HttpService {
     );
   }
 
-  deleteData(url: string): Observable<any> {
+  deleteData(url: string, body: any): Observable<any> {
     this.setImpersonationHeader();
-    return this.http.delete(url, {withCredentials: false, headers: this.headers}).pipe(
+    return this.http.delete(url, {withCredentials: false, headers: this.headers, body: body}).pipe(
       retry(this.retry),
       catchError(this.handleError)
     );
