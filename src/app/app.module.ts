@@ -27,9 +27,11 @@ import {ValidatedDropdownComponent} from './elements/validated-dropdown/validate
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 import {MatIconModule} from "@angular/material/icon";
-import { SpreadsheetComponent } from './components/spreadsheet/spreadsheet.component';
-import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
-import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
+import {MatTabsModule} from "@angular/material/tabs";
+import { GoogleSheetsComponent } from './components/google-sheets/google-sheets.component';
+import {API_KEY, GoogleSheetsDbService} from "ng-google-sheets-db";
 
 @NgModule({
   declarations: [
@@ -43,8 +45,8 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     EditAircraftModalComponent,
     FlightsComponent,
     ValidatedDropdownComponent,
-    SpreadsheetComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    GoogleSheetsComponent
   ],
   imports: [
     BrowserModule,
@@ -63,13 +65,18 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTabsModule
   ],
   providers: [
     HttpService,
     {provide: APP_BASE_HREF, useValue: environment.baseHref},
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
-    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    {
+      provide: API_KEY, useValue: 'AIzaSyCE0eFEjuS5aImOhGaM_8bCKmcjAXbUYUQ',
+    },
+    GoogleSheetsDbService
   ],
   bootstrap: [AppComponent]
 })

@@ -5,11 +5,13 @@
 <ng-container *ngIf="!loading">
   <h1>Flights</h1>
 
-  <div class="row mb-3">
+  <div class="row py-5">
     <div class="col">
-      <app-spreadsheet></app-spreadsheet>
+      <app-google-sheets></app-google-sheets>
     </div>
   </div>
+
+  <hr>
 
   <div class="row mb-3">
     <div class="col-md-6 col-xs-12">
@@ -26,88 +28,99 @@
 
   <ng-container *ngIf="flightList">
 
-    <div class="table-responsive">
-      <table *ngIf="flightList.length" class="table table-sm table-bordered table-striped">
-        <thead>
-        <tr>
-          <th>N<sup>o</sup></th>
-          <th>Aircraft</th>
-          <th>Registration</th>
-          <th>PIC</th>
-          <th>Co-pilot</th>
-          <th>From</th>
-          <th>To</th>
-          <th>Departure date</th>
-          <th>Departure time</th>
-          <th>Arrival date</th>
-          <th>Arrival time</th>
-          <th>Remarks</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let flight of flightList; let i = index;">
-          <td>{{i + 1}}</td>
-          <td>{{flight?.aircraft?.aircraftType?.type}}</td>
-          <td>{{flight?.aircraft?.tailNumber}}</td>
-          <td>{{flight?.pilotInCommand?.moniker}}</td>
-          <td></td>
-          <td>{{flight?.departureAirport?.airportName}}</td>
-          <td>{{flight?.arrivalAirport?.airportName}}</td>
-          <td>{{flight?.departureDatetime | date : 'longDate'}}</td>
-          <td>{{flight?.departureDatetime | date : 'HH:mm'}}</td>
-          <td>{{flight?.arrivalDatetime | date : 'longDate'}}</td>
-          <td>{{flight?.arrivalDatetime | date : 'HH:mm'}}</td>
-          <td>{{flight?.remarks}}</td>
-          <td>
-            <button class="btn btn-danger btn-sm" (click)="confirmDeleteFlight(flight)">Delete</button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div *ngFor="let flight of flightList" class="card mb-3">
-      <div class="card-header d-flex align-items-center">
-        <i class="bi bi-calendar"></i><span class="px-2">{{flight?.departureDatetime | date : 'fullDate'}}</span>
-        <div class="d-flex ms-auto"><i class="bi bi-airplane"></i> <span
-          class="px-2">{{flight?.aircraft?.tailNumber}}</span></div>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">{{flight?.departureAirport?.airportName}} to {{flight?.arrivalAirport?.airportName}}</h5>
-
-        <p class="card-text"><i class="bi bi-clock"></i> <span class="px-2">{{flight?.flightTime}}</span></p>
-
-        <div class="row mb-3">
-          <div class="col-md-6 col-xs-12">
-            <dl>
-              <dt>Aircraft</dt>
-              <dd>{{flight?.aircraft?.aircraftType?.type}} {{flight?.aircraft?.tailNumber}}</dd>
-            </dl>
-          </div>
-          <div class="col-md-6 col-xs-12">
-            <dl>
-              <dt>Pilot in command</dt>
-              <dd>{{flight?.pilotInCommand?.moniker}}</dd>
-            </dl>
-          </div>
-          <div class="col-md-6 col-xs-12">
-            <dl>
-              <dt>Departure</dt>
-              <dd>{{flight?.departureDatetime | date : 'EEEE, MMMM d, y, h:mm'}}</dd>
-            </dl>
-          </div>
-          <div class="col-md-6 col-xs-12">
-            <dl>
-              <dt>Arrival</dt>
-              <dd>{{flight?.arrivalDatetime | date : 'EEEE, MMMM d, y, h:mm'}}</dd>
-            </dl>
+    <mat-tab-group animationDuration="0ms">
+      <mat-tab label="Table">
+        <div class="py-5">
+          <div class="table-responsive">
+            <table *ngIf="flightList.length" class="table table-sm table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>N<sup>o</sup></th>
+                <th>Aircraft</th>
+                <th>Registration</th>
+                <th>PIC</th>
+                <th>Co-pilot</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Departure date</th>
+                <th>Departure time</th>
+                <th>Arrival date</th>
+                <th>Arrival time</th>
+                <th>Remarks</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let flight of flightList; let i = index;">
+                <td>{{i + 1}}</td>
+                <td>{{flight?.aircraft?.aircraftType?.type}}</td>
+                <td>{{flight?.aircraft?.tailNumber}}</td>
+                <td>{{flight?.pilotInCommand?.moniker}}</td>
+                <td></td>
+                <td>{{flight?.departureAirport?.airportName}}</td>
+                <td>{{flight?.arrivalAirport?.airportName}}</td>
+                <td>{{flight?.departureDatetime | date : 'longDate'}}</td>
+                <td>{{flight?.departureDatetime | date : 'HH:mm'}}</td>
+                <td>{{flight?.arrivalDatetime | date : 'longDate'}}</td>
+                <td>{{flight?.arrivalDatetime | date : 'HH:mm'}}</td>
+                <td>{{flight?.remarks}}</td>
+                <td>
+                  <button class="btn btn-danger btn-sm" (click)="confirmDeleteFlight(flight)">Delete</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
+      </mat-tab>
+      <mat-tab label="Cards">
+        <div class="py-5">
+          <div *ngFor="let flight of flightList" class="card mb-3">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-calendar"></i><span class="px-2">{{flight?.departureDatetime | date : 'fullDate'}}</span>
+              <div class="d-flex ms-auto"><i class="bi bi-airplane"></i> <span
+                class="px-2">{{flight?.aircraft?.tailNumber}}</span></div>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{flight?.departureAirport?.airportName}}
+                to {{flight?.arrivalAirport?.airportName}}</h5>
 
-        <a href="#" class="btn btn-primary">Edit flight</a>
-      </div>
-    </div>
+              <p class="card-text"><i class="bi bi-clock"></i> <span class="px-2">{{flight?.flightTime}}</span></p>
+
+              <div class="row mb-3">
+                <div class="col-md-6 col-xs-12">
+                  <dl>
+                    <dt>Aircraft</dt>
+                    <dd>{{flight?.aircraft?.aircraftType?.type}} {{flight?.aircraft?.tailNumber}}</dd>
+                  </dl>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                  <dl>
+                    <dt>Pilot in command</dt>
+                    <dd>{{flight?.pilotInCommand?.moniker}}</dd>
+                  </dl>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                  <dl>
+                    <dt>Departure</dt>
+                    <dd>{{flight?.departureDatetime | date : 'EEEE, MMMM d, y, h:mm'}}</dd>
+                  </dl>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                  <dl>
+                    <dt>Arrival</dt>
+                    <dd>{{flight?.arrivalDatetime | date : 'EEEE, MMMM d, y, h:mm'}}</dd>
+                  </dl>
+                </div>
+              </div>
+
+              <a href="#" class="btn btn-primary">Edit flight</a>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
   </ng-container>
 
   <div class="row">

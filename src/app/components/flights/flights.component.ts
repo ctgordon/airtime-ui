@@ -198,7 +198,6 @@ export class FlightsComponent implements OnInit, OnDestroy {
   }
 
   confirmDeleteFlight(flight: Flight) {
-
     const dialogConfig = new MatDialogConfig();
     const dialogData = new ConfirmDialog("Confirm action", "Are you sure you want to delete this flight?");
     dialogConfig.autoFocus = true;

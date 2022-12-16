@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SpreadsheetComponent } from './spreadsheet.component';
+import { GoogleSheetsComponent } from './google-sheets.component';
 
-describe('SpreadsheetComponent', () => {
-  let component: SpreadsheetComponent;
-  let fixture: ComponentFixture<SpreadsheetComponent>;
+describe('GoogleSheetsComponent', () => {
+  let component: GoogleSheetsComponent;
+  let fixture: ComponentFixture<GoogleSheetsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SpreadsheetComponent ]
+      declarations: [ GoogleSheetsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SpreadsheetComponent);
+    fixture = TestBed.createComponent(GoogleSheetsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
