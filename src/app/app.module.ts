@@ -30,8 +30,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
 import {MatTabsModule} from "@angular/material/tabs";
-import { GoogleSheetsComponent } from './components/google-sheets/google-sheets.component';
-import {API_KEY, GoogleSheetsDbService} from "ng-google-sheets-db";
+import { GoogleSheetsImportComponent } from './components/google-sheets-import/google-sheets-import.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +45,7 @@ import {API_KEY, GoogleSheetsDbService} from "ng-google-sheets-db";
     FlightsComponent,
     ValidatedDropdownComponent,
     ConfirmDialogComponent,
-    GoogleSheetsComponent
+    GoogleSheetsImportComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,10 +72,6 @@ import {API_KEY, GoogleSheetsDbService} from "ng-google-sheets-db";
     {provide: APP_BASE_HREF, useValue: environment.baseHref},
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
-    {
-      provide: API_KEY, useValue: 'AIzaSyCE0eFEjuS5aImOhGaM_8bCKmcjAXbUYUQ',
-    },
-    GoogleSheetsDbService
   ],
   bootstrap: [AppComponent]
 })

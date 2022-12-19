@@ -1,0 +1,57 @@
+<div class="d-flex justify-content-center">
+  <mat-spinner *ngIf="loading"></mat-spinner>
+</div>
+
+<ng-container *ngIf="!loading">
+  <h1>Google sheet import</h1>
+
+  <div class="row my-5">
+    <div class="col">
+      <button (click)="saveData()" class="btn btn-primary">Save data</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="table-responsive">
+        <table *ngIf="entries" class="table table-hover table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>N<sup>o</sup></th>
+            <th>Date</th>
+            <th>School</th>
+            <th>Type</th>
+            <th>Registration</th>
+            <th>PIC</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Take-offs</th>
+            <th>Landings</th>
+            <th>Departure time</th>
+            <th>Arrival time</th>
+            <th>Remarks</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let entry of entries; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{entry?.date}}</td>
+            <td>{{entry?.school}}</td>
+            <td>{{entry?.type}}</td>
+            <td>{{entry?.registration}}</td>
+            <td>{{entry?.pic}}</td>
+            <td>{{entry?.from}}</td>
+            <td>{{entry?.to}}</td>
+            <td>{{entry?.takeOffs}}
+            <td>{{entry?.landings}}</td>
+            <td>{{entry?.departureTime}}</td>
+            <td>{{entry?.arrivalTime}}</td>
+            <td>{{entry?.remarks}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</ng-container>

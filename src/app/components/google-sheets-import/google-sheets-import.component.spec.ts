@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GoogleSheetsComponent } from './google-sheets.component';
+import { GoogleSheetsImportComponent } from './google-sheets-import.component';
 
-describe('GoogleSheetsComponent', () => {
-  let component: GoogleSheetsComponent;
-  let fixture: ComponentFixture<GoogleSheetsComponent>;
+describe('GoogleSheetsImportComponent', () => {
+  let component: GoogleSheetsImportComponent;
+  let fixture: ComponentFixture<GoogleSheetsImportComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GoogleSheetsComponent ]
+      declarations: [ GoogleSheetsImportComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GoogleSheetsComponent);
+    fixture = TestBed.createComponent(GoogleSheetsImportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -6,6 +6,7 @@ import {AirportsComponent} from "./components/airports/airports.component";
 import {PeopleComponent} from "./components/people/people.component";
 import {AircraftTypesComponent} from "./components/aircraft-types/aircraft-types.component";
 import {FlightsComponent} from "./components/flights/flights.component";
+import {GoogleSheetsImportComponent} from "./components/google-sheets-import/google-sheets-import.component";
 
 const routes: Routes = [
   {
@@ -36,6 +37,11 @@ const routes: Routes = [
   {
     path: 'people',
     component: PeopleComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'import',
+    component: GoogleSheetsImportComponent,
     pathMatch: 'full'
   },
   {
