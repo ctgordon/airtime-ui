@@ -7,21 +7,7 @@
 
   <div class="row py-5">
     <div class="col">
-    </div>
-  </div>
-
-  <hr>
-
-  <div class="row mb-3">
-    <div class="col-md-6 col-xs-12">
-      <dl>
-        <dt>Total flights</dt>
-        <dd>{{flightList?.length}}</dd>
-      </dl>
-      <dl>
-        <dt>Time since last flight</dt>
-        <dd>{{timeSinceLastFlight}}</dd>
-      </dl>
+      <app-flight-summary></app-flight-summary>
     </div>
   </div>
 
@@ -64,7 +50,7 @@
                 <td>{{flight?.arrivalDatetime | date : 'HH:mm'}}</td>
                 <td>{{flight?.remarks}}</td>
                 <td>
-                  <button class="btn btn-danger btn-sm" (click)="confirmDeleteFlight(flight)">Delete</button>
+                  <button class="btn btn-primary btn-sm">Edit</button>
                 </td>
               </tr>
               </tbody>

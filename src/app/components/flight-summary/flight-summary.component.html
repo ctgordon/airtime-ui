@@ -1,0 +1,18 @@
+<div class="d-flex justify-content-center">
+  <mat-spinner *ngIf="loading"></mat-spinner>
+</div>
+
+<ng-container *ngIf="!loading">
+  <dl>
+    <dt>Total flights</dt>
+    <dd>{{flightSummary?.totalFlights}}</dd>
+    <dt>Total hours</dt>
+    <dd>{{flightSummary?.totalHours}}</dd>
+    <dt>Total hours PIC</dt>
+    <dd>{{flightSummary?.totalHoursPIC}}</dd>
+    <dt>Total hours dual</dt>
+    <dd>{{flightSummary?.totalHoursDual}}</dd>
+    <dt>Time since last flight</dt>
+    <dd>{{timeSinceLastFlight}}</dd>
+  </dl>
+</ng-container>

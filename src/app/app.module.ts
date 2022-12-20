@@ -31,6 +31,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import { GoogleSheetsImportComponent } from './components/google-sheets-import/google-sheets-import.component';
+import { FlightSummaryComponent } from './components/flight-summary/flight-summary.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { GoogleSheetsImportComponent } from './components/google-sheets-import/g
     ValidatedDropdownComponent,
     ConfirmDialogComponent,
     GoogleSheetsImportComponent,
+    FlightSummaryComponent,
   ],
   imports: [
     BrowserModule,

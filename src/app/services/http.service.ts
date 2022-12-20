@@ -6,6 +6,7 @@ import {Aircraft} from "../model/aircraft";
 import {environment} from "../../environments/environment";
 import {Person} from "../model/person";
 import {Airport} from "../model/airport";
+import {FlightSummary} from "../model/flight.summary";
 
 @Injectable()
 export class HttpService {
@@ -53,6 +54,10 @@ export class HttpService {
 
   getPeople(): Observable<Array<Person>> {
     return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/people/`);
+  }
+
+  getFlightSummary(): Observable<FlightSummary> {
+    return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/flight-summary/`);
   }
 
   getData(url: string): Observable<any> {

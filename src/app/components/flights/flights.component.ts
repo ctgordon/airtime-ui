@@ -46,7 +46,6 @@ export class FlightsComponent implements OnInit, OnDestroy {
   public arrivalAirportDropdown!: ValidatedDropdown;
   public departureAirportDropdown!: ValidatedDropdown;
   public dateTimeFormat: string = 'YYYY-MM-DD HH:mm:ss.SSS'
-  public timeSinceLastFlight!: string;
 
   private aircraftSubscription!: Subscription;
   private flightSubscription!: Subscription;
@@ -83,8 +82,6 @@ export class FlightsComponent implements OnInit, OnDestroy {
             flight.flightTime = moment.utc(moment.duration(diff).asMilliseconds()).format('HH:mm');
           });
           this.flightList.sort((a, b) => b.departureDatetime.localeCompare(a.departureDatetime));
-
-          this.timeSinceLastFlight = moment(this.flightList[0].arrivalDatetime).fromNow();
         }
 
         this.loading = false;
