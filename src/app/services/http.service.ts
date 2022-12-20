@@ -57,7 +57,7 @@ export class HttpService {
   }
 
   getFlightSummary(): Observable<FlightSummary> {
-    return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/flight-summary/`);
+    return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/flight-summary`);
   }
 
   getData(url: string): Observable<any> {

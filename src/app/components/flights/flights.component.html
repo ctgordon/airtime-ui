@@ -5,8 +5,25 @@
 <ng-container *ngIf="!loading">
   <h1>Flights</h1>
 
-  <div class="row py-5">
-    <div class="col">
+  <div class="row border border-1">
+    <div class="col px-5 py-3">
+      <h3>Todo</h3>
+      <ol>
+        <li>Custom reports (dates between)</li>
+        <li>Milestones</li>
+        <li>Achievements</li>
+        <li>Edit flights</li>
+        <li>Add VFR flag to flights</li>
+        <li>Make flights sortable</li>
+        <li>Add filter to flights</li>
+        <li>Better layout for flight summary</li>
+        <li>Move new flight form to separate route</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row border border-1">
+    <div class="col px-5 py-3">
       <app-flight-summary></app-flight-summary>
     </div>
   </div>
