@@ -3,6 +3,7 @@ import {HttpService} from "../../services/http.service";
 import {GoogleSheetEntry} from "../../model/google.sheet.entry";
 import {environment} from "../../../environments/environment";
 import * as moment from 'moment';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-google-sheets-import',
@@ -14,83 +15,86 @@ export class GoogleSheetsImportComponent implements OnInit {
   public entries!: GoogleSheetEntry[];
   public loading = true;
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, private _snackBar: MatSnackBar,) {
   }
 
   ngOnInit(): void {
     this.httpService.getData('http://localhost:8082/entries').subscribe((data: GoogleSheetEntry[]) => {
       if (data) {
         this.entries = data;
+        this.entries.forEach(entry => {
+          this.changeAirportNameToAirportCode(entry);
+          if (entry.pic.trim().toUpperCase() === 'SELF') {
+            entry.pic = 'Christopher Gordon';
+          }
+          if (entry.pic.trim().toUpperCase() === 'J.BILLINGE') {
+            entry.pic = 'Jeremy Billinge';
+          }
+          if (entry.pic.trim().toUpperCase() === 'M.SPAVEN') {
+            entry.pic = 'Malcolm Spaven';
+          }
+        });
       }
       this.loading = false;
     });
   }
 
-  getDate(date: any) {
-    let formattedDate;
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
 
-    const converted = this.convertDate(date);
+  changeAirportNameToAirportCode(entry: GoogleSheetEntry) {
+    const conversions = [
+      {name: 'FIFE', code: 'EGPJ'},
+      {name: 'DUNDEE', code: 'EGPN'},
+      {name: 'CARLISLE', code: 'EGNC'},
+      {name: 'PERTH', code: 'EGPT'},
+      {name: 'INVERNESS', code: 'EGPE'},
+      {name: 'CUMBERNAULD', code: 'EGPG'},
+    ];
 
-    if (typeof date !== "undefined") {
-      if (converted) {
-        const formatted = this.formatDate(converted);
-        if (formatted) {
-          formattedDate = formatted;
-        }
-      } else {
-        formattedDate = this.formatDate(date);
+    conversions.forEach(conversion => {
+      if (entry.from.trim().toUpperCase() === conversion.name.trim().toUpperCase()) {
+        entry.from = conversion.code.toUpperCase();
       }
-    }
-
-    return formattedDate;
+      if (entry.to.trim().toUpperCase() === conversion.name.trim().toUpperCase()) {
+        entry.to = conversion.code.toUpperCase();
+      }
+    });
   }
 
-  convertDate(excelTimestamp: number) {
-    const secondsInDay = 24 * 60 * 60;
-    const excelEpoch = new Date(1899, 11, 31);
-    const excelEpochAsUnixTimestamp = excelEpoch.getTime();
-    const missingLeapYearDay = secondsInDay * 1000;
-    const delta = excelEpochAsUnixTimestamp - missingLeapYearDay;
-    const excelTimestampAsUnixTimestamp = excelTimestamp * secondsInDay * 1000;
-    const parsed = excelTimestampAsUnixTimestamp + delta;
-    return isNaN(parsed) ? null : new Date(parsed);
-  };
+  formatDate(date: string) {
+    const validFormats = ['DD/MM/YYYY', 'DD/M/YYYY'];
+    let formatted;
 
-  convertTime(time: number) {
-    let baseNumber = (time * 24)
-    let hour = Math.floor(baseNumber).toString();
-    if (hour.length < 2) {
-      hour = '0' + hour;
-    }
+    validFormats.forEach(fmt => {
+      const isValid = moment(date, fmt);
+      if (isValid) {
+        formatted = moment(date, fmt).format('YYYY-MM-DD').toString();
+      }
+    });
 
-    let minute = Math.round((baseNumber % 1) * 60).toString();
-    if (minute.length < 2) {
-      minute = '0' + minute;
-    }
-    return (hour + ':' + minute + ':00');
-  }
-
-
-  formatDate(date: null | Date) {
-    const isValid = moment(date, 'DD/MM/YYYY');
-    if (isValid) {
-      return moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD');
-    } else {
-      return null;
-    }
+    return formatted;
   }
 
   saveData() {
     this.loading = true;
 
     this.entries.forEach(entry => {
-      const date = this.getDate(entry.date);
-      entry.departureDateTime = moment(`${date} ${entry.departureTime}`).format('YYYY-MM-DD HH:mm:ss.SSS').toString();
-      entry.arrivalDateTime = moment(`${date} ${entry.arrivalTime}`).format('YYYY-MM-DD HH:mm:ss.SSS').toString();
+      const date = this.formatDate(entry.date);
+      const departureTime = moment(entry.departureTime, 'HH:mm:ss').format('HH:mm:ss').toString();
+      if (entry.arrivalTime === '24:07:00') {
+        entry.arrivalTime = '00:07:00';
+      }
+      const arrivalTime = moment(entry.arrivalTime, 'HH:mm:ss').format('HH:mm:ss').toString();
+
+      entry.departureDatetime = `${date} ${departureTime}`;
+      entry.arrivalDatetime = `${date} ${arrivalTime}`;
     });
 
     this.httpService.postData(`${environment.apiServer}${environment.app}${environment.endpoint}/google-entries/`, this.entries).subscribe(data => {
       this.loading = false;
+      this.openSnackBar('Saved', 'Ok!');
     }, error => {
       this.loading = false;
       console.error(error);

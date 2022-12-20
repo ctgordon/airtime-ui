@@ -13,8 +13,8 @@ export class GoogleSheetEntry {
   arrivalTime!: string;
   log!: { dual: string, pic: string };
   remarks!: string;
-  departureDateTime!: string;
-  arrivalDateTime!: string;
+  departureDatetime!: string;
+  arrivalDatetime!: string;
 }
 
 
