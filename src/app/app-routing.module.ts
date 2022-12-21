@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {AircraftComponent} from "./components/aircraft/aircraft.component";
 import {HomeComponent} from "./components/home/home.component";
 import {AirportsComponent} from "./components/airports/airports.component";
@@ -7,6 +7,7 @@ import {PeopleComponent} from "./components/people/people.component";
 import {AircraftTypesComponent} from "./components/aircraft-types/aircraft-types.component";
 import {FlightsComponent} from "./components/flights/flights.component";
 import {GoogleSheetsImportComponent} from "./components/google-sheets-import/google-sheets-import.component";
+import {CustomReportsComponent} from "./components/custom-reports/custom-reports.component";
 
 const routes: Routes = [
   {
@@ -45,6 +46,11 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'reports',
+    component: CustomReportsComponent,
+    pathMatch: 'full'
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full'
@@ -55,4 +61,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

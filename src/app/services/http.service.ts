@@ -7,6 +7,7 @@ import {environment} from "../../environments/environment";
 import {Person} from "../model/person";
 import {Airport} from "../model/airport";
 import {FlightSummary} from "../model/flight.summary";
+import {CustomReport} from "../model/custom.report";
 
 @Injectable()
 export class HttpService {
@@ -58,6 +59,10 @@ export class HttpService {
 
   getFlightSummary(): Observable<FlightSummary> {
     return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/flight-summary`);
+  }
+
+  getCustomReports(): Observable<CustomReport[]> {
+    return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/custom-reports`);
   }
 
   getData(url: string): Observable<any> {

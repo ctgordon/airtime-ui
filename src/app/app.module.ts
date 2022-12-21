@@ -32,6 +32,7 @@ import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog
 import {MatTabsModule} from "@angular/material/tabs";
 import { GoogleSheetsImportComponent } from './components/google-sheets-import/google-sheets-import.component';
 import { FlightSummaryComponent } from './components/flight-summary/flight-summary.component';
+import { CustomReportsComponent } from './components/custom-reports/custom-reports.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { FlightSummaryComponent } from './components/flight-summary/flight-summa
     ConfirmDialogComponent,
     GoogleSheetsImportComponent,
     FlightSummaryComponent,
+    CustomReportsComponent,
   ],
   imports: [
     BrowserModule,

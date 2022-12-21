@@ -1,0 +1,38 @@
+<div *ngIf="customReports.length" class="row">
+  <div class="col">
+    <table class="table table-bordered table-striped table-hover">
+      <thead>
+      <tr>
+        <th>N<sup>o</sup></th>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Starts</th>
+        <th>Ends</th>
+        <th>In use</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let report of customReports; let i = index;">
+        <td>{{i + 1}}</td>
+        <td>{{report?.reportType?.name}}</td>
+        <td>{{report?.reportName}}</td>
+        <td>{{report?.startDate}}</td>
+        <td>{{report?.endDate}}</td>
+        <td>{{report?.inUse}}</td>
+        <td>
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary btn-sm">Edit</button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <button class="btn btn-success">Add report</button>
+  </div>
+</div>
