@@ -1,0 +1,53 @@
+<h1 mat-dialog-title>Custom report</h1>
+<div mat-dialog-content>
+
+  <form class="needs-validation">
+
+    <div class="row mb-3">
+      <div class="col">
+        <app-validated-input [control]="reportName" [label]="'Report name'" [type]="'text'"></app-validated-input>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <app-validated-dropdown [params]="validatedDropdown"></app-validated-dropdown>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-6">
+        <app-validated-input [control]="startDate" [label]="'Start date'" [type]="'date'"></app-validated-input>
+      </div>
+
+      <div class="col-6">
+        <app-validated-input [control]="startTime" [label]="'Start time'" [type]="'time'"></app-validated-input>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-6">
+        <app-validated-input [control]="endDate" [label]="'End date'" [type]="'date'"></app-validated-input>
+      </div>
+
+      <div class="col-6">
+        <app-validated-input [control]="endTime" [label]="'End time'" [type]="'time'"></app-validated-input>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="inUse" [formControl]="inUse">
+          <label class="form-check-label" for="inUse">In use</label>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+</div>
+<div mat-dialog-actions>
+  <button class="btn btn-success" [disabled]="!customReportForm?.valid" (click)="save()">Save</button>
+</div>
+

@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {HttpService} from "./services/http.service";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AircraftComponent} from './components/aircraft/aircraft.component';
 import {HomeComponent} from './components/home/home.component';
 import {RouterModule} from "@angular/router";
@@ -25,14 +25,17 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {FlightsComponent} from './components/flights/flights.component';
 import {ValidatedDropdownComponent} from './elements/validated-dropdown/validated-dropdown.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
+import {MAT_DATE_LOCALE, MatNativeDateModule, MatOptionModule} from "@angular/material/core";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
+import {ConfirmDialogComponent} from './dialogs/confirm-dialog/confirm-dialog.component';
 import {MatTabsModule} from "@angular/material/tabs";
-import { GoogleSheetsImportComponent } from './components/google-sheets-import/google-sheets-import.component';
-import { FlightSummaryComponent } from './components/flight-summary/flight-summary.component';
-import { CustomReportsComponent } from './components/custom-reports/custom-reports.component';
+import {GoogleSheetsImportComponent} from './components/google-sheets-import/google-sheets-import.component';
+import {FlightSummaryComponent} from './components/flight-summary/flight-summary.component';
+import {CustomReportsComponent} from './components/custom-reports/custom-reports.component';
+import {CustomReportComponent} from './dialogs/custom-report/custom-report.component';
+import {MatSelectModule} from "@angular/material/select";
+import { ValidatedInputComponent } from './elements/validated-input/validated-input.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +53,8 @@ import { CustomReportsComponent } from './components/custom-reports/custom-repor
     GoogleSheetsImportComponent,
     FlightSummaryComponent,
     CustomReportsComponent,
+    CustomReportComponent,
+    ValidatedInputComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,12 +69,15 @@ import { CustomReportsComponent } from './components/custom-reports/custom-repor
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
     MatSnackBarModule,
-    MatTabsModule
+    MatTabsModule,
+    FormsModule
   ],
   providers: [
     HttpService,
@@ -79,4 +87,5 @@ import { CustomReportsComponent } from './components/custom-reports/custom-repor
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

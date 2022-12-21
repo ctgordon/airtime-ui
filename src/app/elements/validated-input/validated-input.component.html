@@ -1,0 +1,10 @@
+<ng-container *ngIf="control">
+  <label [for]="id">{{label}}</label>
+  <input [id]="id" [type]="type" class="form-control" [formControl]="control">
+  <div *ngIf="control?.valid" class="valid-feedback">
+    Looks good!
+  </div>
+  <div *ngIf="!control?.valid" class="invalid-feedback">
+    Please enter a valid answer.
+  </div>
+</ng-container>

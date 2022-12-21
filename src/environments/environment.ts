@@ -16,7 +16,10 @@ export const environment = {
   ],
   showPre: true,
   linearStepper: false,
-  baseHref: '/airtime/'
+  baseHref: '/airtime/',
+  longDateTimeFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
+  dateFormat: 'YYYY-MM-DD',
+  timeFormat: 'HH:mm:ss'
 };
 
 /*

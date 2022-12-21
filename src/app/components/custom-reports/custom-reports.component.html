@@ -1,4 +1,10 @@
-<div *ngIf="customReports.length" class="row">
+<div *ngIf="flightSummary" class="row">
+  <div class="col">
+    <pre><p>{{flightSummary | json}}</p></pre>
+  </div>
+</div>
+
+<div *ngIf="customReports?.length" class="row">
   <div class="col">
     <table class="table table-bordered table-striped table-hover">
       <thead>
@@ -9,6 +15,7 @@
         <th>Starts</th>
         <th>Ends</th>
         <th>In use</th>
+        <th></th>
         <th></th>
       </tr>
       </thead>
@@ -22,7 +29,12 @@
         <td>{{report?.inUse}}</td>
         <td>
           <div class="d-grid gap-2">
-            <button class="btn btn-primary btn-sm">Edit</button>
+            <button class="btn btn-primary btn-sm" (click)="openDialog(report)">Edit</button>
+          </div>
+        </td>
+        <td>
+          <div class="d-grid gap-2">
+            <button class="btn btn-success btn-sm" (click)="run(report)">Run</button>
           </div>
         </td>
       </tr>

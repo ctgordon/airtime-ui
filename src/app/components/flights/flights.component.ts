@@ -11,7 +11,7 @@ import {Airport} from "../../model/airport";
 import * as moment from 'moment';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {ConfirmDialogComponent} from "../confirm-dialog/confirm-dialog.component";
+import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialog.component";
 import {ConfirmDialog} from "../../model/confirm.dialog";
 
 @Component({

@@ -1,9 +1,10 @@
 import {Aircraft} from "./aircraft";
+import {ReportType} from "./report.type";
 
 export class CustomReport {
   id!: number;
-  reportType!: { id: string, name: string };
-  reportName!: {};
+  reportType!: ReportType;
+  reportName!: string;
   startDate!: string;
   endDate!: string;
   aircraft!: Aircraft;
