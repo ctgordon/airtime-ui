@@ -8,6 +8,7 @@ import {AircraftTypesComponent} from "./components/aircraft-types/aircraft-types
 import {FlightsComponent} from "./components/flights/flights.component";
 import {GoogleSheetsImportComponent} from "./components/google-sheets-import/google-sheets-import.component";
 import {CustomReportsComponent} from "./components/custom-reports/custom-reports.component";
+import {ReportTypesComponent} from "./components/report-types/report-types.component";
 
 const routes: Routes = [
   {
@@ -48,6 +49,11 @@ const routes: Routes = [
   {
     path: 'reports',
     component: CustomReportsComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'report-types',
+    component: ReportTypesComponent,
     pathMatch: 'full'
   },
   {

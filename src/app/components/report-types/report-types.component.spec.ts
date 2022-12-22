@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditAircraftModalComponent } from './edit-aircraft-modal.component';
+import { ReportTypesComponent } from './report-types.component';
 
-describe('EditAircraftModalComponent', () => {
-  let component: EditAircraftModalComponent;
-  let fixture: ComponentFixture<EditAircraftModalComponent>;
+describe('ReportTypesComponent', () => {
+  let component: ReportTypesComponent;
+  let fixture: ComponentFixture<ReportTypesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditAircraftModalComponent ]
+      declarations: [ ReportTypesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditAircraftModalComponent);
+    fixture = TestBed.createComponent(ReportTypesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

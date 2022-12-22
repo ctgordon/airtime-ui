@@ -54,6 +54,9 @@ export class AppComponent implements OnInit, OnDestroy {
       },
       {
         title: 'Reports', link: '/reports'
+      },
+      {
+        title: 'Report types', link: '/report-types'
       }
     ];
   }

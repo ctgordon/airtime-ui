@@ -7,7 +7,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AircraftType} from "../../model/aircraftType";
 import {TableConfig} from "../../model/table.config";
 import {MatDialog} from "@angular/material/dialog";
-import {EditAircraftModalComponent} from "../../dialogs/edit-aircraft-modal/edit-aircraft-modal.component";
 
 @Component({
   selector: 'app-aircraft',
@@ -80,14 +79,6 @@ export class AircraftComponent implements OnInit, OnDestroy {
   editAircraft(aircraft: Aircraft) {
     this.tailNumber.patchValue(aircraft.tailNumber);
     this.aircraftType.patchValue(aircraft.aircraftType.id);
-  }
-
-  openDialog() {
-    const dialogRef = this.dialog.open(EditAircraftModalComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
   }
 
   get tailNumber(): FormControl {

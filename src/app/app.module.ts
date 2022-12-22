@@ -18,7 +18,6 @@ import {AircraftTypesComponent} from './components/aircraft-types/aircraft-types
 import {TableComponent} from './elements/table/table.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
-import {EditAircraftModalComponent} from "./dialogs/edit-aircraft-modal/edit-aircraft-modal.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
@@ -33,9 +32,13 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {GoogleSheetsImportComponent} from './components/google-sheets-import/google-sheets-import.component';
 import {FlightSummaryComponent} from './components/flight-summary/flight-summary.component';
 import {CustomReportsComponent} from './components/custom-reports/custom-reports.component';
-import {CustomReportComponent} from './dialogs/custom-report/custom-report.component';
 import {MatSelectModule} from "@angular/material/select";
-import { ValidatedInputComponent } from './elements/validated-input/validated-input.component';
+import {ValidatedInputComponent} from './elements/validated-input/validated-input.component';
+import {ReportTypesComponent} from './components/report-types/report-types.component';
+import {MatTableModule} from "@angular/material/table";
+import {MatSortModule} from "@angular/material/sort";
+import { SwitchComponent } from './elements/switch/switch.component';
+import { GenericFormComponent } from './dialogs/generic-form/generic-form.component';
 
 @NgModule({
   declarations: [
@@ -46,15 +49,16 @@ import { ValidatedInputComponent } from './elements/validated-input/validated-in
     PeopleComponent,
     AircraftTypesComponent,
     TableComponent,
-    EditAircraftModalComponent,
     FlightsComponent,
     ValidatedDropdownComponent,
     ConfirmDialogComponent,
     GoogleSheetsImportComponent,
     FlightSummaryComponent,
     CustomReportsComponent,
-    CustomReportComponent,
     ValidatedInputComponent,
+    ReportTypesComponent,
+    SwitchComponent,
+    GenericFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,13 +75,15 @@ import { ValidatedInputComponent } from './elements/validated-input/validated-in
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
+    MatTableModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
     MatSnackBarModule,
     MatTabsModule,
-    FormsModule
+    FormsModule,
+    MatSortModule
   ],
   providers: [
     HttpService,

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CustomReportComponent } from './custom-report.component';
+import { GenericFormComponent } from './generic-form.component';
 
-describe('CustomReportComponent', () => {
-  let component: CustomReportComponent;
-  let fixture: ComponentFixture<CustomReportComponent>;
+describe('GenericFormComponent', () => {
+  let component: GenericFormComponent;
+  let fixture: ComponentFixture<GenericFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CustomReportComponent ]
+      declarations: [ GenericFormComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CustomReportComponent);
+    fixture = TestBed.createComponent(GenericFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

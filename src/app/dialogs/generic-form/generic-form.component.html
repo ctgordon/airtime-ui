@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>{{dialogTitle}}</h1>
+<div mat-dialog-content>
+
+  <form class="needs-validation" [formGroup]="formGroup">
+
+    <ng-container *ngIf="controls">
+      <div class="row mb-3" *ngFor="let element of controls">
+        <div [ngClass]="element.columns > 0 && element.columns < 12 ? 'col-' + element.columns : 'col'">
+          <ng-container [ngSwitch]="element.type">
+            <app-validated-input *ngSwitchCase="'text'" [control]="element.control" [label]="element.label"
+                                 [type]="'text'"></app-validated-input>
+
+            <app-validated-input *ngSwitchCase="'date'" [control]="element.control" [label]="element.label"
+                                 [type]="'date'"></app-validated-input>
+
+            <app-validated-input *ngSwitchCase="'time'" [control]="element.control" [label]="element.label"
+                                 [type]="'time'"></app-validated-input>
+
+            <app-switch *ngSwitchCase="'switch'" [control]="element.control" [label]="element.label"></app-switch>
+
+            <app-validated-dropdown *ngSwitchCase="'select'" [params]="getParams(element)"></app-validated-dropdown>
+          </ng-container>
+        </div>
+
+      </div>
+    </ng-container>
+  </form>
+
+</div>
+<div mat-dialog-actions>
+  <button class="btn btn-success" [disabled]="!formGroup?.valid" (click)="save()">Save</button>
+</div>
