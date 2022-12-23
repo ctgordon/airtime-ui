@@ -9,6 +9,8 @@ import {Airport} from "../model/airport";
 import {FlightSummary} from "../model/flight.summary";
 import {CustomReport} from "../model/custom.report";
 import {ReportType} from "../model/report.type";
+import {AircraftType} from "../model/aircraftType";
+import {Flight} from "../model/flight";
 
 @Injectable()
 export class HttpService {
@@ -50,12 +52,20 @@ export class HttpService {
     return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft/`);
   }
 
+  getAircraftTypes(): Observable<Array<AircraftType>> {
+    return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft-types/`);
+  }
+
   getAirports(): Observable<Array<Airport>> {
     return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/airports/`);
   }
 
   getPeople(): Observable<Array<Person>> {
     return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/people/`);
+  }
+
+  getFlights(): Observable<Array<Flight>> {
+    return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/flights/`);
   }
 
   getFlightSummary(): Observable<FlightSummary> {

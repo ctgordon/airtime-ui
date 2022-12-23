@@ -1,47 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {TableConfig} from "../../model/table.config";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatTableDataSource} from "@angular/material/table";
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
-
-const FRUITS: string[] = [
-  'blueberry',
-  'lychee',
-  'kiwi',
-  'mango',
-  'peach',
-  'lime',
-  'pomegranate',
-  'pineapple',
-];
-const NAMES: string[] = [
-  'Maia',
-  'Asher',
-  'Olivia',
-  'Atticus',
-  'Amelia',
-  'Jack',
-  'Charlotte',
-  'Theodore',
-  'Isla',
-  'Oliver',
-  'Isabella',
-  'Jasper',
-  'Cora',
-  'Levi',
-  'Violet',
-  'Arthur',
-  'Mia',
-  'Thomas',
-  'Elizabeth',
-];
 
 @Component({
   selector: 'app-table',
@@ -50,7 +10,7 @@ const NAMES: string[] = [
 })
 export class TableComponent implements OnInit {
   @Output() emitter: EventEmitter<any> = new EventEmitter<any>();
-  @Input() displayedColumns!: Array<{ id: string, title: string }>;
+  @Input() displayedColumns!: Array<{ id: string, title: string, hidden: boolean }>;
   @Input() dataSource!: MatTableDataSource<any>;
   @Input() rawData!: Array<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -62,7 +22,6 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.displayedColumns.forEach(col => this.columnDefinitions.push(col.id));
   }
 

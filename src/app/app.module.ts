@@ -40,6 +40,9 @@ import {MatSortModule} from "@angular/material/sort";
 import { SwitchComponent } from './components/switch/switch.component';
 import { GenericFormComponent } from './dialogs/generic-form/generic-form.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { SelectAircraftTypeComponent } from './components/select-aircraft-type/select-aircraft-type.component';
+import { SelectPilotInCommandComponent } from './components/select-pilot-in-command/select-pilot-in-command.component';
+import { SelectAirportComponent } from './components/select-airport/select-airport.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +63,9 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     ReportTypesComponent,
     SwitchComponent,
     GenericFormComponent,
+    SelectAircraftTypeComponent,
+    SelectPilotInCommandComponent,
+    SelectAirportComponent,
   ],
   imports: [
     BrowserModule,

@@ -38,10 +38,7 @@ export class GenericFormComponent implements OnInit {
 
     dropdown.formControl = element.control;
     dropdown.id = element.id;
-    dropdown.list = element.options;
     dropdown.label = element.label;
-    dropdown.optionValue = element.optionValue;
-    dropdown.optionLabel = element.optionLabel;
 
     return dropdown;
   }

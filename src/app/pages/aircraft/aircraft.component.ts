@@ -5,10 +5,11 @@ import {Subscription} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AircraftType} from "../../model/aircraftType";
-import {TableConfig} from "../../model/table.config";
 import {MatDialog} from "@angular/material/dialog";
 import {MatTableDataSource} from "@angular/material/table";
-import {Airport} from "../../model/airport";
+import {GenericFormProperties} from "../../model/generic.form.properties";
+import {GenericFormElementProperties} from "../../model/generic.form.element.properties";
+import {GenericFormComponent} from "../../dialogs/generic-form/generic-form.component";
 
 @Component({
   selector: 'app-aircraft',
@@ -18,9 +19,11 @@ import {Airport} from "../../model/airport";
 export class AircraftComponent implements OnInit, OnDestroy {
 
   public displayedColumns = [
-    {id: 'id', title: 'ID'},
-    {id: 'tailNumber', title: 'Tail number'},
-    {id: 'type', title: 'Type'},
+    {id: 'id', title: 'ID', hidden: false},
+    {id: 'tailNumber', title: 'Tail number', hidden: false},
+    {id: 'type', title: 'Type', hidden: false},
+    {id: 'aircraft', title: '', hidden: true},
+    {id: 'edit', title: '', hidden: false},
   ];
 
   public dataSource!: MatTableDataSource<any>;
@@ -28,22 +31,29 @@ export class AircraftComponent implements OnInit, OnDestroy {
   public aircraftList!: Aircraft[];
   public aircraftTypesList!: AircraftType[];
   public aircraftForm!: FormGroup;
-
   public loading: boolean = false;
+  public genericForm: GenericFormProperties = new GenericFormProperties();
 
   private aircraftSubscription!: Subscription;
-  private aircraftTypesSubscription!: Subscription;
 
   constructor(private httpService: HttpService, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
     this.getAircraft();
-    this.getAircraftTypes();
     this.aircraftForm = new FormGroup({
       tailNumber: new FormControl(null, [Validators.required]),
       aircraftType: new FormControl(null, [Validators.required])
     });
+
+    this.genericForm.formGroup = new FormGroup({});
+    this.genericForm.formGroup.addControl('tailNumber', this.tailNumber);
+    this.genericForm.formGroup.addControl('aircraftType', this.aircraftType);
+
+    this.genericForm.controls = [
+      new GenericFormElementProperties('name', 'Name', 'text', this.tailNumber, 12),
+      new GenericFormElementProperties('', '', 'aircraftType', this.aircraftType, 12)
+    ];
   }
 
   getAircraft() {
@@ -52,10 +62,15 @@ export class AircraftComponent implements OnInit, OnDestroy {
       next: aircraft => {
         this.aircraftList = aircraft;
 
-        const filtered: Array<{ id: string, tailNumber: string, type: string }> = [];
+        const filtered: Array<any> = [];
 
         this.aircraftList.forEach(aircraft => {
-          filtered.push({id: aircraft.id, tailNumber: aircraft.tailNumber, type: aircraft.aircraftType.type})
+          filtered.push({
+            id: aircraft.id,
+            tailNumber: aircraft.tailNumber,
+            type: aircraft.aircraftType.type,
+            aircraft: aircraft
+          })
         });
 
         this.dataSource = new MatTableDataSource<any>(filtered);
@@ -70,22 +85,28 @@ export class AircraftComponent implements OnInit, OnDestroy {
     });
   }
 
-  getAircraftTypes() {
-    this.aircraftTypesSubscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft-types/`).subscribe({
-      next: (v) => {
-        this.aircraftTypesList = v;
-      },
-      error: (e) => {
-        console.error(e)
-      },
-      complete: () => {
-      }
-    });
+  addAircraft() {
+    this.genericForm.dialogTitle = 'Add aircraft';
+    this.openDialog();
   }
 
-  editAircraft(aircraft: Aircraft) {
+  editAircraft(data: any) {
+    const aircraft = data.aircraft;
+    this.genericForm.dialogTitle = 'Edit aircraft';
     this.tailNumber.patchValue(aircraft.tailNumber);
     this.aircraftType.patchValue(aircraft.aircraftType.id);
+    this.openDialog();
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(GenericFormComponent, {
+      data: this.genericForm,
+      width: '75vw',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.save();
+    });
   }
 
   get tailNumber(): FormControl {
@@ -125,9 +146,6 @@ export class AircraftComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (typeof this.aircraftSubscription !== 'undefined') {
       this.aircraftSubscription.unsubscribe();
-    }
-    if (typeof this.aircraftTypesSubscription !== 'undefined') {
-      this.aircraftTypesSubscription.unsubscribe();
     }
   }
 }

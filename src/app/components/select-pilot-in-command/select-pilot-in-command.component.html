@@ -1,0 +1,10 @@
+<label for="pilotInCommand" class="form-label">Pilot in command</label>
+<select class="form-select" [ngClass]="{'is-invalid': !control.valid}" id="pilotInCommand"
+        aria-describedby="pilotInCommandFeedback" [formControl]="control">
+  <option selected disabled value="">Choose...</option>
+  <option *ngFor="let person of people"
+          [value]="person?.id">{{person?.name}}</option>
+</select>
+<div *ngIf="control.touched && !control.valid" id="pilotInCommandFeedback" class="invalid-feedback">
+  Please select a valid person.
+</div>

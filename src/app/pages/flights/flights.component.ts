@@ -6,14 +6,14 @@ import {environment} from "../../../environments/environment";
 import {Subscription} from "rxjs";
 import {Aircraft} from "../../model/aircraft";
 import {Person} from "../../model/person";
-import {ValidatedDropdown} from "../../model/validated.dropdown";
 import {Airport} from "../../model/airport";
 import * as moment from 'moment';
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialog.component";
-import {ConfirmDialog} from "../../model/confirm.dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {MatTableDataSource} from "@angular/material/table";
+import {GenericFormComponent} from "../../dialogs/generic-form/generic-form.component";
+import {GenericFormProperties} from "../../model/generic.form.properties";
+import {GenericFormElementProperties} from "../../model/generic.form.element.properties";
 
 @Component({
   selector: 'app-flights',
@@ -23,18 +23,20 @@ import {MatTableDataSource} from "@angular/material/table";
 export class FlightsComponent implements OnInit, OnDestroy {
 
   public displayedColumns = [
-    {id: 'id', title: 'ID'},
-    {id: 'aircraft', title: 'Aircraft'},
-    {id: 'pilotInCommand', title: 'PIC'},
-    {id: 'departureAirport', title: 'Departure airport'},
-    {id: 'arrivalAirport', title: 'Arrival airport'},
-    {id: 'departureDate', title: 'Departure date'},
-    {id: 'departureTime', title: 'Departure time'},
-    {id: 'arrivalDate', title: 'Arrival date'},
-    {id: 'arrivalTime', title: 'Arrival time'},
-    {id: 'remarks', title: 'Remarks'},
-    {id: 'takeOffs', title: 'Take offs'},
-    {id: 'landings', title: 'Landings'},
+    {id: 'id', title: 'ID', hidden: false},
+    {id: 'aircraft', title: 'Aircraft', hidden: false},
+    {id: 'pilotInCommand', title: 'PIC', hidden: false},
+    {id: 'departureAirport', title: 'Departure airport', hidden: false},
+    {id: 'arrivalAirport', title: 'Arrival airport', hidden: false},
+    {id: 'departureDate', title: 'Departure date', hidden: false},
+    {id: 'departureTime', title: 'Departure time', hidden: false},
+    {id: 'arrivalDate', title: 'Arrival date', hidden: false},
+    {id: 'arrivalTime', title: 'Arrival time', hidden: false},
+    {id: 'remarks', title: 'Remarks', hidden: false},
+    {id: 'takeOffs', title: 'Take offs', hidden: false},
+    {id: 'landings', title: 'Landings', hidden: false},
+    {id: 'edit', title: '', hidden: false},
+    {id: 'flight', title: '', hidden: false},
   ];
   public dataSource!: MatTableDataSource<any>;
 
@@ -57,12 +59,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
   public aircraftList!: Aircraft[];
   public peopleList!: Person[];
   public airportList!: Airport[];
-
-  public peopleDropdown!: ValidatedDropdown;
-  public aircraftDropdown!: ValidatedDropdown;
-  public arrivalAirportDropdown!: ValidatedDropdown;
-  public departureAirportDropdown!: ValidatedDropdown;
-  public dateTimeFormat: string = 'YYYY-MM-DD HH:mm:ss.SSS'
+  public genericForm: GenericFormProperties = new GenericFormProperties();
 
   private aircraftSubscription!: Subscription;
   private flightSubscription!: Subscription;
@@ -78,18 +75,38 @@ export class FlightsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.flightList = [];
     this.getFlights();
-    /*this.getAircraft();
-    this.getAirports();
-    this.getPeople();*/
-  }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action);
+    this.genericForm.formGroup = new FormGroup({});
+    this.genericForm.formGroup.addControl('aircraft', this.aircraft);
+    this.genericForm.formGroup.addControl('pilotInCommand', this.pilotInCommand);
+    this.genericForm.formGroup.addControl('departureAirport', this.departureAirport);
+    this.genericForm.formGroup.addControl('arrivalAirport', this.arrivalAirport);
+    this.genericForm.formGroup.addControl('departureDate', this.departureDate);
+    this.genericForm.formGroup.addControl('arrivalDate', this.arrivalDate);
+    this.genericForm.formGroup.addControl('departureTime', this.departureTime);
+    this.genericForm.formGroup.addControl('arrivalTime', this.arrivalTime);
+    this.genericForm.formGroup.addControl('remarks', this.remarks);
+    this.genericForm.formGroup.addControl('takeOffs', this.takeOffs);
+    this.genericForm.formGroup.addControl('landings', this.landings);
+
+    this.genericForm.controls = [
+      new GenericFormElementProperties('', '', 'aircraftType', this.aircraft, 12),
+      new GenericFormElementProperties('', '', 'pilotInCommand', this.pilotInCommand, 12),
+      new GenericFormElementProperties('', 'Departure airport', 'airport', this.departureAirport, 12),
+      new GenericFormElementProperties('', 'Arrival airport', 'airport', this.arrivalAirport, 12),
+      new GenericFormElementProperties('departureDate', 'Departure date', 'date', this.departureDate, 6),
+      new GenericFormElementProperties('arrivalDate', 'Arrival date', 'date', this.arrivalDate, 6),
+      new GenericFormElementProperties('departureTime', 'Departure time', 'time', this.departureTime, 4),
+      new GenericFormElementProperties('arrivalTime', 'Arrival time', 'time', this.arrivalTime, 4),
+      new GenericFormElementProperties('remarks', 'Remarks', 'text', this.remarks, 12),
+      new GenericFormElementProperties('takeOffs', 'Take offs', 'number', this.takeOffs, 2),
+      new GenericFormElementProperties('landings', 'Landings', 'number', this.landings, 2),
+    ];
   }
 
   getFlights() {
     this.loading = true;
-    this.flightSubscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/flights/`).subscribe({
+    this.flightSubscription = this.httpService.getFlights().subscribe({
       next: (data) => {
         this.flightList = data;
 
@@ -97,7 +114,7 @@ export class FlightsComponent implements OnInit, OnDestroy {
 
         if (this.flightList.length) {
           this.flightList.forEach(flight => {
-            const diff = moment(flight.arrivalDatetime, 'YYYY-MM-DD hh:mm:ss').diff(moment(flight.departureDatetime, 'YYYY-MM-DD hh:mm:ss'));
+            const diff = moment(flight.arrivalDatetime, environment.longDateTimeFormat).diff(moment(flight.departureDatetime, environment.longDateTimeFormat));
             flight.flightTime = moment.utc(moment.duration(diff).asMilliseconds()).format('HH:mm');
 
             filtered.push({
@@ -112,7 +129,8 @@ export class FlightsComponent implements OnInit, OnDestroy {
               arrivalTime: moment(flight.arrivalDatetime, environment.longDateTimeFormat).format(environment.timeFormat),
               remarks: flight.remarks,
               takeOffs: flight.takeOffs,
-              landings: flight.landings
+              landings: flight.landings,
+              flight: flight
             });
 
           });
@@ -132,116 +150,37 @@ export class FlightsComponent implements OnInit, OnDestroy {
     });
   }
 
-  getAircraft() {
-    this.aircraftSubscription = this.httpService.getAircraft().subscribe({
-      next: aircraft => {
-        this.aircraftList = aircraft;
-        this.aircraftList.sort((a, b) => a.tailNumber.localeCompare(b.tailNumber));
-        this.aircraftDropdown = {
-          formControl: this.aircraft,
-          id: 'aircraft',
-          label: 'Aircraft',
-          list: this.aircraftList,
-          optionLabel: 'tailNumber',
-          optionValue: 'id'
-        };
-      },
-      error: err => {
-        console.error(err);
-      },
-      complete: () => {
-      }
+  addFlight() {
+    this.genericForm.dialogTitle = 'Add flight';
+    this.openDialog();
+  }
+
+  editFlight(data: any) {
+    const flight = data.flight;
+    this.genericForm.dialogTitle = 'Edit flight';
+    this.id.patchValue(flight.id);
+    this.aircraft.patchValue(flight.aircraft.aircraftType.id);
+    this.pilotInCommand.patchValue(flight.pilotInCommand.id);
+    this.departureAirport.patchValue(flight.departureAirport.id);
+    this.arrivalAirport.patchValue(flight.arrivalAirport.id);
+    this.departureDate.patchValue(moment(flight.departureDatetime, environment.longDateTimeFormat).format(environment.dateFormat).toString());
+    this.arrivalDate.patchValue(moment(flight.arrivalDatetime, environment.longDateTimeFormat).format(environment.dateFormat));
+    this.departureTime.patchValue(moment(flight.departureDatetime, environment.longDateTimeFormat).format(environment.timeFormat));
+    this.arrivalTime.patchValue(moment(flight.arrivalDatetime, environment.longDateTimeFormat).format(environment.timeFormat));
+    this.remarks.patchValue(flight.remarks);
+    this.takeOffs.patchValue(flight.takeOffs);
+    this.landings.patchValue(flight.landings);
+    this.openDialog();
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(GenericFormComponent, {
+      data: this.genericForm,
+      width: '75vw',
     });
-  }
 
-  getAirports() {
-    this.airportSubscription = this.httpService.getAirports().subscribe({
-      next: airports => {
-        this.airportList = airports;
-        this.airportList.sort((a, b) => a.airportName.localeCompare(b.airportName));
-        this.arrivalAirportDropdown = {
-          formControl: this.arrivalAirport,
-          id: 'arrivalAirport',
-          label: 'Arrival airport',
-          list: this.airportList,
-          optionLabel: 'airportName',
-          optionValue: 'id'
-        };
-        this.departureAirportDropdown = {
-          formControl: this.departureAirport,
-          id: 'departureAirport',
-          label: 'Departure airport',
-          list: this.airportList,
-          optionLabel: 'airportName',
-          optionValue: 'id'
-        };
-      },
-      error: (e) => {
-        console.error(e);
-      },
-      complete: () => {
-      }
-    });
-  }
-
-  getPeople() {
-    this.peopleSubscription = this.httpService.getPeople().subscribe({
-      next: people => {
-        this.peopleList = people;
-        this.peopleList.sort((a, b) => a.name.localeCompare(b.name));
-        this.peopleDropdown = {
-          formControl: this.pilotInCommand,
-          id: 'pilotInCommand',
-          label: 'Pilot in command',
-          list: this.peopleList,
-          optionLabel: 'moniker',
-          optionValue: 'id'
-        };
-        const defaultOption = this.peopleList.find(it => it.moniker === 'SELF');
-        if (defaultOption) {
-          this.pilotInCommand.patchValue(defaultOption.id);
-        }
-      },
-      error: err => {
-        console.error(err);
-      },
-      complete: () => {
-      }
-    });
-  }
-
-  editFlight(flight: Flight) {
-  }
-
-  deleteFlight(flight: Flight) {
-    this.loading = true;
-    this.httpService.deleteData(`${environment.apiServer}${environment.app}${environment.endpoint}/flight/`, flight).subscribe({
-      next: () => {
-        this.openSnackBar('Flight deleted', 'Ok!')
-      },
-      error: (e) => {
-        console.error(e)
-        this.loading = false;
-        this.openSnackBar('Flight not deleted', 'Ok!')
-      },
-      complete: () => {
-        this.getFlights();
-        this.loading = false;
-      }
-    });
-  }
-
-  confirmDeleteFlight(flight: Flight) {
-    const dialogConfig = new MatDialogConfig();
-    const dialogData = new ConfirmDialog("Confirm action", "Are you sure you want to delete this flight?");
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = dialogData;
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {
-        this.deleteFlight(flight);
-      }
+    dialogRef.afterClosed().subscribe(result => {
+      this.save();
     });
   }
 
@@ -262,8 +201,8 @@ export class FlightsComponent implements OnInit, OnDestroy {
       flight.aircraft = this.buildDtoFromSelectedValue(this.aircraft, this.aircraftList);
       flight.departureAirport = this.buildDtoFromSelectedValue(this.departureAirport, this.airportList);
       flight.arrivalAirport = this.buildDtoFromSelectedValue(this.arrivalAirport, this.airportList);
-      flight.departureDatetime = moment(`${this.departureDate.value} ${this.departureTime.value}`).format(this.dateTimeFormat).toString();
-      flight.arrivalDatetime = moment(`${this.arrivalDate.value}T${this.arrivalTime.value}`).format(this.dateTimeFormat).toString();
+      flight.departureDatetime = moment(`${this.departureDate.value} ${this.departureTime.value}`).format(environment.longDateTimeFormat).toString();
+      flight.arrivalDatetime = moment(`${this.arrivalDate.value}T${this.arrivalTime.value}`).format(environment.longDateTimeFormat).toString();
     }
 
     this.httpService.postData(`${environment.apiServer}${environment.app}${environment.endpoint}/flight/`, flight).subscribe({

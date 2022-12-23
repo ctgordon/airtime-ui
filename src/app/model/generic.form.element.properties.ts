@@ -6,19 +6,13 @@ export class GenericFormElementProperties {
   private _type!: string;
   private _control!: FormControl;
   private _columns!: number;
-  private _options!: Array<any>;
-  private _optionValue: any;
-  private _optionLabel!: string;
 
-  public constructor(id: string, label: string, type: string, control: FormControl, columns: number, options: Array<any>, optionValue: any, optionLabel: string) {
+  public constructor(id: string, label: string, type: string, control: FormControl, columns: number) {
     this.id = id;
     this.label = label;
     this.type = type;
     this.control = control;
     this.columns = columns;
-    this.options = options;
-    this.optionValue = optionValue;
-    this.optionLabel = optionLabel;
   }
 
 
@@ -61,30 +55,5 @@ export class GenericFormElementProperties {
 
   set columns(value: number) {
     this._columns = value;
-  }
-
-  get options(): Array<any> {
-    return this._options;
-  }
-
-  set options(value: Array<any>) {
-    this._options = value;
-  }
-
-
-  get optionValue(): any {
-    return this._optionValue;
-  }
-
-  set optionValue(value: any) {
-    this._optionValue = value;
-  }
-
-  get optionLabel(): string {
-    return this._optionLabel;
-  }
-
-  set optionLabel(value: string) {
-    this._optionLabel = value;
   }
 }

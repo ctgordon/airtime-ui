@@ -3,14 +3,10 @@ import {Person} from "../../model/person";
 import {environment} from "../../../environments/environment";
 import {Subscription} from "rxjs";
 import {HttpService} from "../../services/http.service";
-import {TableConfig} from "../../model/table.config";
 import {PersonRole} from "../../model/person.role";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Airport} from "../../model/airport";
 import {MatTableDataSource} from "@angular/material/table";
-import {AircraftType} from "../../model/aircraftType";
 import {people_v1} from "googleapis";
-import People = people_v1.People;
 
 @Component({
   selector: 'app-people',
@@ -24,10 +20,10 @@ export class PeopleComponent implements OnInit, OnDestroy {
   public personRoles!: PersonRole[];
 
   public displayedColumns = [
-    {id: 'id', title: 'ID'},
-    {id: 'name', title: 'Name'},
-    {id: 'moniker', title: 'Moniker'},
-    {id: 'role', title: 'Role'},
+    {id: 'id', title: 'ID', hidden: false},
+    {id: 'name', title: 'Name', hidden: false},
+    {id: 'moniker', title: 'Moniker', hidden: false},
+    {id: 'role', title: 'Role', hidden: false},
   ];
   public dataSource!: MatTableDataSource<any>;
 

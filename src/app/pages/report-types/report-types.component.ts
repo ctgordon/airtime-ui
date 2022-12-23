@@ -2,8 +2,7 @@ import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/c
 import {HttpService} from "../../services/http.service";
 import {Subscription} from "rxjs";
 import {ReportType} from "../../model/report.type";
-import {LiveAnnouncer} from "@angular/cdk/a11y";
-import {MatSort, Sort} from "@angular/material/sort";
+import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {GenericFormComponent} from "../../dialogs/generic-form/generic-form.component";
@@ -29,13 +28,13 @@ export class ReportTypesComponent implements OnInit, OnDestroy, AfterViewInit {
   public reportTypeForm: ReportTypeForm = new ReportTypeForm();
 
   public displayedColumns = [
-    {id: 'id', title: 'ID'},
-    {id: 'name', title: 'Name'},
-    {id: 'inUse', title: 'inUse'},
+    {id: 'id', title: 'ID', hidden: false},
+    {id: 'name', title: 'Name', hidden: false},
+    {id: 'inUse', title: 'inUse', hidden: false},
   ];
   public dataSource!: MatTableDataSource<ReportType>;
 
-  constructor(private httpService: HttpService, private _liveAnnouncer: LiveAnnouncer, public dialog: MatDialog) {
+  constructor(private httpService: HttpService, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -48,8 +47,8 @@ export class ReportTypesComponent implements OnInit, OnDestroy, AfterViewInit {
     this.genericForm.formGroup.addControl('inUse', this.reportTypeForm.inUse);
 
     this.genericForm.controls = [
-      new GenericFormElementProperties('name', 'Name', 'text', this.reportTypeForm.name, 12, [], null, ''),
-      new GenericFormElementProperties('inUse', 'In use', 'switch', this.reportTypeForm.inUse, 12, [], null, '')
+      new GenericFormElementProperties('name', 'Name', 'text', this.reportTypeForm.name, 12),
+      new GenericFormElementProperties('inUse', 'In use', 'switch', this.reportTypeForm.inUse, 12)
     ];
   }
 
@@ -67,14 +66,6 @@ export class ReportTypesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.loading = false;
       }
     });
-  }
-
-  announceSortChange(sortState: Sort) {
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-      this._liveAnnouncer.announce('Sorting cleared');
-    }
   }
 
   openDialog(reportType: ReportType): void {

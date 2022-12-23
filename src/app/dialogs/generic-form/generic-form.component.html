@@ -16,9 +16,20 @@
             <app-validated-input *ngSwitchCase="'time'" [control]="element.control" [label]="element.label"
                                  [type]="'time'"></app-validated-input>
 
+            <app-validated-input *ngSwitchCase="'number'" [control]="element.control" [label]="element.label"
+                                 [type]="'number'"></app-validated-input>
+
             <app-switch *ngSwitchCase="'switch'" [control]="element.control" [label]="element.label"></app-switch>
 
             <app-validated-dropdown *ngSwitchCase="'select'" [params]="getParams(element)"></app-validated-dropdown>
+
+            <app-select-aircraft-type *ngSwitchCase="'aircraftType'"
+                                      [control]="element.control"></app-select-aircraft-type>
+
+            <app-select-pilot-in-command *ngSwitchCase="'pilotInCommand'"
+                                         [control]="element.control"></app-select-pilot-in-command>
+
+            <app-select-airport *ngSwitchCase="'airport'" [control]="element.control" [label]="element.label"></app-select-airport>
           </ng-container>
         </div>
 

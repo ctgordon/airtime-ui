@@ -30,13 +30,13 @@ export class CustomReportsComponent implements OnInit, OnDestroy {
   public customReportForm: CustomReportForm = new CustomReportForm();
 
   public displayedColumns = [
-    {id: 'id', title: 'ID'},
-    {id: 'reportType', title: 'Type'},
-    {id: 'reportName', title: 'Name'},
-    {id: 'startDate', title: 'Starts'},
-    {id: 'endDate', title: 'Ends'},
-    {id: 'aircraft', title: 'Aircraft'},
-    {id: 'inUse', title: 'inUse'},
+    {id: 'id', title: 'ID', hidden: false},
+    {id: 'reportType', title: 'Type', hidden: false},
+    {id: 'reportName', title: 'Name', hidden: false},
+    {id: 'startDate', title: 'Starts', hidden: false},
+    {id: 'endDate', title: 'Ends', hidden: false},
+    {id: 'aircraft', title: 'Aircraft', hidden: false},
+    {id: 'inUse', title: 'inUse', hidden: false},
   ];
   public dataSource!: MatTableDataSource<any>;
 
@@ -91,14 +91,14 @@ export class CustomReportsComponent implements OnInit, OnDestroy {
     this.genericFormProperties.formGroup.addControl('inUse', this.customReportForm.inUse);
 
     this.genericFormProperties.controls = [
-      new GenericFormElementProperties('id', 'id', 'text', this.customReportForm.id, 12, [], null, ''),
-      new GenericFormElementProperties('reportName', 'Report name', 'text', this.customReportForm.reportName, 12, [], null, ''),
-      new GenericFormElementProperties('reportType', 'Report type', 'select', this.customReportForm.reportType, 12, this.customReports, 'id', 'reportName'),
-      new GenericFormElementProperties('startDate', 'Start date', 'date', this.customReportForm.startDate, 6, [], null, ''),
-      new GenericFormElementProperties('startTime', 'Start time', 'time', this.customReportForm.startTime, 4, [], null, ''),
-      new GenericFormElementProperties('endDate', 'End date', 'date', this.customReportForm.endDate, 6, [], null, ''),
-      new GenericFormElementProperties('endTime', 'End time', 'time', this.customReportForm.endTime, 4, [], null, ''),
-      new GenericFormElementProperties('inUse', 'In use', 'switch', this.customReportForm.inUse, 12, [], null, ''),
+      new GenericFormElementProperties('id', 'id', 'text', this.customReportForm.id, 12),
+      new GenericFormElementProperties('reportName', 'Report name', 'text', this.customReportForm.reportName, 12),
+      new GenericFormElementProperties('reportType', 'Report type', 'select', this.customReportForm.reportType, 12),
+      new GenericFormElementProperties('startDate', 'Start date', 'date', this.customReportForm.startDate, 6),
+      new GenericFormElementProperties('startTime', 'Start time', 'time', this.customReportForm.startTime, 4),
+      new GenericFormElementProperties('endDate', 'End date', 'date', this.customReportForm.endDate, 6),
+      new GenericFormElementProperties('endTime', 'End time', 'time', this.customReportForm.endTime, 4),
+      new GenericFormElementProperties('inUse', 'In use', 'switch', this.customReportForm.inUse, 12),
     ];
   }
 

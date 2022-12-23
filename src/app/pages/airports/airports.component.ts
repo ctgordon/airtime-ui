@@ -19,13 +19,13 @@ export class AirportsComponent implements OnInit, OnDestroy {
   public loading: boolean = false;
 
   public displayedColumns = [
-    {id: 'countryName', title: 'Country name'},
-    {id: 'countryCode', title: 'Country code'},
-    {id: 'airportName', title: 'Airport name'},
-    {id: 'airportCode', title: 'Airport code'},
-    {id: 'cityName', title: 'City name'},
-    {id: 'latitude', title: 'Latitude'},
-    {id: 'longitude', title: 'Longitude'},
+    {id: 'countryName', title: 'Country name', hidden: false},
+    {id: 'countryCode', title: 'Country code', hidden: false},
+    {id: 'airportName', title: 'Airport name', hidden: false},
+    {id: 'airportCode', title: 'Airport code', hidden: false},
+    {id: 'cityName', title: 'City name', hidden: false},
+    {id: 'latitude', title: 'Latitude', hidden: false},
+    {id: 'longitude', title: 'Longitude', hidden: false},
   ];
   public dataSource!: MatTableDataSource<Airport>;
 

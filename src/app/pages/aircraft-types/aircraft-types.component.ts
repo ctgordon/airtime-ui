@@ -19,8 +19,8 @@ export class AircraftTypesComponent implements OnInit, OnDestroy {
   public loading: boolean = false;
   public aircraftTypesList !: AircraftType[];
   public displayedColumns = [
-    {id: 'id', title: 'ID'},
-    {id: 'type', title: 'Type'},
+    {id: 'id', title: 'ID', hidden: false},
+    {id: 'type', title: 'Type', hidden: false},
   ];
   public dataSource!: MatTableDataSource<AircraftType>;
 

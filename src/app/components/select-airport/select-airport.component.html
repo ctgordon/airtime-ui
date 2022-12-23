@@ -1,0 +1,10 @@
+<label for="airportType" class="form-label">{{label}}</label>
+<select class="form-select" [ngClass]="{'is-invalid': !control.valid}" id="airportType"
+        aria-describedby="airportTypeFeedback" [formControl]="control">
+  <option selected disabled value="">Choose...</option>
+  <option *ngFor="let airport of airportList"
+          [value]="airport?.id">{{airport?.airportName}}</option>
+</select>
+<div *ngIf="control.touched && !control.valid" id="airportTypeFeedback" class="invalid-feedback">
+  Please select a valid airport.
+</div>
