@@ -6,7 +6,7 @@ import {AirportsComponent} from "./pages/airports/airports.component";
 import {PeopleComponent} from "./pages/people/people.component";
 import {AircraftTypesComponent} from "./pages/aircraft-types/aircraft-types.component";
 import {FlightsComponent} from "./pages/flights/flights.component";
-import {GoogleSheetsImportComponent} from "./components/google-sheets-import/google-sheets-import.component";
+import {GoogleSheetsImportComponent} from "./pages/google-sheets-import/google-sheets-import.component";
 import {CustomReportsComponent} from "./pages/custom-reports/custom-reports.component";
 import {ReportTypesComponent} from "./pages/report-types/report-types.component";
 
