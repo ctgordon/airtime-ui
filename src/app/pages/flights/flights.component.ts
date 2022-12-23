@@ -13,6 +13,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialog.component";
 import {ConfirmDialog} from "../../model/confirm.dialog";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-flights',
@@ -20,6 +21,22 @@ import {ConfirmDialog} from "../../model/confirm.dialog";
   styleUrls: ['./flights.component.scss']
 })
 export class FlightsComponent implements OnInit, OnDestroy {
+
+  public displayedColumns = [
+    {id: 'id', title: 'ID'},
+    {id: 'aircraft', title: 'Aircraft'},
+    {id: 'pilotInCommand', title: 'PIC'},
+    {id: 'departureAirport', title: 'Departure airport'},
+    {id: 'arrivalAirport', title: 'Arrival airport'},
+    {id: 'departureDate', title: 'Departure date'},
+    {id: 'departureTime', title: 'Departure time'},
+    {id: 'arrivalDate', title: 'Arrival date'},
+    {id: 'arrivalTime', title: 'Arrival time'},
+    {id: 'remarks', title: 'Remarks'},
+    {id: 'takeOffs', title: 'Take offs'},
+    {id: 'landings', title: 'Landings'},
+  ];
+  public dataSource!: MatTableDataSource<any>;
 
   public loading: boolean = false;
   public flightForm: FormGroup = new FormGroup({
@@ -61,9 +78,9 @@ export class FlightsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.flightList = [];
     this.getFlights();
-    this.getAircraft();
+    /*this.getAircraft();
     this.getAirports();
-    this.getPeople();
+    this.getPeople();*/
   }
 
   openSnackBar(message: string, action: string) {
@@ -76,13 +93,33 @@ export class FlightsComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.flightList = data;
 
+        const filtered: Array<any> = [];
+
         if (this.flightList.length) {
           this.flightList.forEach(flight => {
             const diff = moment(flight.arrivalDatetime, 'YYYY-MM-DD hh:mm:ss').diff(moment(flight.departureDatetime, 'YYYY-MM-DD hh:mm:ss'));
             flight.flightTime = moment.utc(moment.duration(diff).asMilliseconds()).format('HH:mm');
+
+            filtered.push({
+              id: flight.id,
+              aircraft: flight.aircraft.tailNumber,
+              pilotInCommand: flight.pilotInCommand.moniker,
+              departureAirport: flight.departureAirport.airportCode,
+              arrivalAirport: flight.arrivalAirport.airportCode,
+              departureDate: moment(flight.departureDatetime, environment.longDateTimeFormat).format(environment.dateFormat),
+              departureTime: moment(flight.departureDatetime, environment.longDateTimeFormat).format(environment.timeFormat),
+              arrivalDate: moment(flight.arrivalDatetime, environment.longDateTimeFormat).format(environment.dateFormat),
+              arrivalTime: moment(flight.arrivalDatetime, environment.longDateTimeFormat).format(environment.timeFormat),
+              remarks: flight.remarks,
+              takeOffs: flight.takeOffs,
+              landings: flight.landings
+            });
+
           });
           this.flightList.sort((a, b) => b.departureDatetime.localeCompare(a.departureDatetime));
         }
+
+        this.dataSource = new MatTableDataSource<any>(filtered);
 
         this.loading = false;
       },

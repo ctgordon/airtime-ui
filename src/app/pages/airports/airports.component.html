@@ -5,7 +5,7 @@
 <ng-container *ngIf="!loading">
   <h1>Airports</h1>
 
-  <app-table [config]="tableConfig"></app-table>
+  <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [rawData]="airportList"></app-table>
 
   <!--<button class="btn btn-primary" (click)="getAirportInfo()">Get airport info</button>-->
 </ng-container>

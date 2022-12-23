@@ -7,6 +7,10 @@ import {TableConfig} from "../../model/table.config";
 import {PersonRole} from "../../model/person.role";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Airport} from "../../model/airport";
+import {MatTableDataSource} from "@angular/material/table";
+import {AircraftType} from "../../model/aircraftType";
+import {people_v1} from "googleapis";
+import People = people_v1.People;
 
 @Component({
   selector: 'app-people',
@@ -18,11 +22,15 @@ export class PeopleComponent implements OnInit, OnDestroy {
   public loading: boolean = false;
   public people!: Person[];
   public personRoles!: PersonRole[];
-  public tableConfig: TableConfig = {
-    data: [],
-    headers: ['Name', 'Moniker', 'Role'],
-    editable: true,
-  };
+
+  public displayedColumns = [
+    {id: 'id', title: 'ID'},
+    {id: 'name', title: 'Name'},
+    {id: 'moniker', title: 'Moniker'},
+    {id: 'role', title: 'Role'},
+  ];
+  public dataSource!: MatTableDataSource<any>;
+
   public peopleForm: FormGroup = new FormGroup({
     id: new FormControl(null),
     name: new FormControl(null, [Validators.required]),
@@ -46,11 +54,20 @@ export class PeopleComponent implements OnInit, OnDestroy {
     this.peopleSubscription = this.httpService.getPeople().subscribe({
       next: (v) => {
         this.people = v;
-        this.tableConfig.data = [];
+
+        const filtered: Array<{ id: string, name: string, moniker: string, role: string }> = [];
 
         this.people.forEach(person => {
-          this.tableConfig.data.push({obj: person, values: [person.name, person.moniker, person.personRole.role]});
+          filtered.push({
+            id: person.id.toString(),
+            name: person.name,
+            moniker: person.moniker,
+            role: person.personRole.role
+          });
         });
+
+        this.dataSource = new MatTableDataSource<any>(filtered);
+
         this.loading = false;
       },
       error: (e) => {

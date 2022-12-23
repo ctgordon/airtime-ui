@@ -1,0 +1,80 @@
+<div class="d-flex justify-content-center">
+  <mat-spinner *ngIf="loading"></mat-spinner>
+</div>
+
+<ng-container *ngIf="!loading">
+  <h1>Flights</h1>
+
+  <app-table [displayedColumns]="displayedColumns" [dataSource]="dataSource"></app-table>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="border border-dark p-3 mb-2 border-opacity-25">
+        <form [formGroup]="flightForm">
+
+          <app-validated-dropdown *ngIf="peopleList" [params]="peopleDropdown"></app-validated-dropdown>
+
+          <app-validated-dropdown *ngIf="aircraftList" [params]="aircraftDropdown"></app-validated-dropdown>
+
+          <app-validated-dropdown *ngIf="airportList" [params]="departureAirportDropdown"></app-validated-dropdown>
+
+          <app-validated-dropdown *ngIf="airportList" [params]="arrivalAirportDropdown"></app-validated-dropdown>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="departureDate" class="form-label">Departure date</label>
+              <input id="departureDate" type="date" class="form-control" [formControl]="departureDate">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="arrivalDate" class="form-label">Arrival date</label>
+              <input id="arrivalDate" type="date" class="form-control" [formControl]="arrivalDate">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="departureTime" class="form-label">Departure time</label>
+              <input id="departureTime" type="time" class="form-control" [formControl]="departureTime">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="arrivalTime" class="form-label">Arrival time</label>
+              <input id="arrivalTime" type="time" class="form-control" [formControl]="arrivalTime">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="takeOffs" class="form-label">Take offs</label>
+              <input id="takeOffs" type="number" min="0" class="form-control" [formControl]="takeOffs">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="landings" class="form-label">Landings</label>
+              <input id="landings" type="number" min="0" class="form-control" [formControl]="landings">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="remarks" class="form-label">Remarks</label>
+            <input type="text" class="form-control"
+                   id="remarks" [formControl]="remarks">
+          </div>
+
+          <div class="mb-3">
+            <button class="btn btn-primary" (click)="save()" [disabled]="!flightForm.valid">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!--<button class="btn btn-primary" (click)="openDialog()">Open dialog</button>-->
+</ng-container>

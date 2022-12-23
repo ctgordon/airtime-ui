@@ -5,6 +5,9 @@ import {HttpService} from "../../services/http.service";
 import {AircraftType} from "../../model/aircraftType";
 import {TableConfig} from "../../model/table.config";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatTableDataSource} from "@angular/material/table";
+import {Airport} from "../../model/airport";
+import {Aircraft} from "../../model/aircraft";
 
 @Component({
   selector: 'app-aircraft-types',
@@ -15,11 +18,12 @@ export class AircraftTypesComponent implements OnInit, OnDestroy {
 
   public loading: boolean = false;
   public aircraftTypesList !: AircraftType[];
-  public tableConfig: TableConfig = {
-    data: [],
-    headers: ['ID', 'Type'],
-    editable: true,
-  };
+  public displayedColumns = [
+    {id: 'id', title: 'ID'},
+    {id: 'type', title: 'Type'},
+  ];
+  public dataSource!: MatTableDataSource<AircraftType>;
+
   public aircraftTypeForm: FormGroup = new FormGroup({
       id: new FormControl(null),
       aircraftType: new FormControl(null, [Validators.required])
@@ -38,14 +42,9 @@ export class AircraftTypesComponent implements OnInit, OnDestroy {
   getAircraftTypes() {
     this.loading = true;
     this.aircraftTypesSubscription = this.httpService.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/aircraft-types/`).subscribe({
-      next: (v) => {
-        this.aircraftTypesList = v;
-
-        this.tableConfig.data = [];
-
-        this.aircraftTypesList.forEach(aircraftType => {
-          this.tableConfig.data.push({obj: aircraftType, values: [aircraftType.id, aircraftType.type]});
-        });
+      next: (data) => {
+        this.aircraftTypesList = data;
+        this.dataSource = new MatTableDataSource(this.aircraftTypesList);
         this.loading = false;
       },
       error: (e) => {

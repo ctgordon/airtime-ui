@@ -1,0 +1,17 @@
+<div *ngIf="flightSummary" class="row">
+  <div class="col">
+    <pre><p>{{flightSummary | json}}</p></pre>
+  </div>
+</div>
+
+<div *ngIf="customReports?.length" class="row">
+  <div class="col">
+    <app-table [displayedColumns]="displayedColumns" [dataSource]="dataSource"></app-table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <button class="btn btn-success">Add report</button>
+  </div>
+</div>

@@ -11,6 +11,7 @@ import {GenericFormProperties} from "../../model/generic.form.properties";
 import {FormGroup} from "@angular/forms";
 import {GenericFormElementProperties} from "../../model/generic.form.element.properties";
 import * as moment from "moment/moment";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-custom-reports',
@@ -28,6 +29,17 @@ export class CustomReportsComponent implements OnInit, OnDestroy {
   public genericFormProperties: GenericFormProperties = new GenericFormProperties();
   public customReportForm: CustomReportForm = new CustomReportForm();
 
+  public displayedColumns = [
+    {id: 'id', title: 'ID'},
+    {id: 'reportType', title: 'Type'},
+    {id: 'reportName', title: 'Name'},
+    {id: 'startDate', title: 'Starts'},
+    {id: 'endDate', title: 'Ends'},
+    {id: 'aircraft', title: 'Aircraft'},
+    {id: 'inUse', title: 'inUse'},
+  ];
+  public dataSource!: MatTableDataSource<any>;
+
   constructor(private httpService: HttpService, public dialog: MatDialog) {
   }
 
@@ -39,6 +51,22 @@ export class CustomReportsComponent implements OnInit, OnDestroy {
     this.httpService.getCustomReports().subscribe({
       next: (data) => {
         this.customReports = data;
+
+        const filtered: Array<{ id: string, reportType: string, reportName: string, startDate: string, endDate: string, aircraft: string, inUse: boolean }> = [];
+
+        this.customReports.forEach(report => {
+          filtered.push({
+            id: report.id.toString(),
+            reportType: report.reportType.name,
+            reportName: report.reportName,
+            startDate: report.startDate,
+            endDate: report.endDate,
+            aircraft: report.aircraft.tailNumber,
+            inUse: report.inUse,
+          });
+        });
+
+        this.dataSource = new MatTableDataSource<any>(filtered);
         this.setGenericFormProperties();
       },
       error: (err) => {
@@ -50,7 +78,7 @@ export class CustomReportsComponent implements OnInit, OnDestroy {
     });
   }
 
-  setGenericFormProperties():void {
+  setGenericFormProperties(): void {
     this.genericFormProperties.dialogTitle = 'Custom report';
     this.genericFormProperties.formGroup = new FormGroup({});
     this.genericFormProperties.formGroup.addControl('id', this.customReportForm.id);
@@ -74,18 +102,6 @@ export class CustomReportsComponent implements OnInit, OnDestroy {
     ];
   }
 
-  run(report: CustomReport): void {
-    this.loading = true;
-    this.httpService.postData(`${environment.apiServer}${environment.app}${environment.endpoint}/custom-report`, report).subscribe({
-      next: (data) => {
-        this.flightSummary = data;
-        this.loading = false;
-      }, complete: () => {
-      },
-      error: () => {
-      }
-    });
-  }
 
   openDialog(report: CustomReport): void {
 

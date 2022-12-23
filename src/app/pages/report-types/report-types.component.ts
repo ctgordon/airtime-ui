@@ -25,10 +25,15 @@ export class ReportTypesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public reportTypes!: ReportType[];
   public loading: boolean = true;
-  public dataSource !: MatTableDataSource<any>;
-  public displayedColumns: string[] = ['id', 'name', 'inUse', 'edit'];
   public genericForm: GenericFormProperties = new GenericFormProperties();
   public reportTypeForm: ReportTypeForm = new ReportTypeForm();
+
+  public displayedColumns = [
+    {id: 'id', title: 'ID'},
+    {id: 'name', title: 'Name'},
+    {id: 'inUse', title: 'inUse'},
+  ];
+  public dataSource!: MatTableDataSource<ReportType>;
 
   constructor(private httpService: HttpService, private _liveAnnouncer: LiveAnnouncer, public dialog: MatDialog) {
   }

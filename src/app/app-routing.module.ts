@@ -1,14 +1,14 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AircraftComponent} from "./components/aircraft/aircraft.component";
-import {HomeComponent} from "./components/home/home.component";
-import {AirportsComponent} from "./components/airports/airports.component";
-import {PeopleComponent} from "./components/people/people.component";
-import {AircraftTypesComponent} from "./components/aircraft-types/aircraft-types.component";
-import {FlightsComponent} from "./components/flights/flights.component";
+import {AircraftComponent} from "./pages/aircraft/aircraft.component";
+import {HomeComponent} from "./pages/home/home.component";
+import {AirportsComponent} from "./pages/airports/airports.component";
+import {PeopleComponent} from "./pages/people/people.component";
+import {AircraftTypesComponent} from "./pages/aircraft-types/aircraft-types.component";
+import {FlightsComponent} from "./pages/flights/flights.component";
 import {GoogleSheetsImportComponent} from "./components/google-sheets-import/google-sheets-import.component";
-import {CustomReportsComponent} from "./components/custom-reports/custom-reports.component";
-import {ReportTypesComponent} from "./components/report-types/report-types.component";
+import {CustomReportsComponent} from "./pages/custom-reports/custom-reports.component";
+import {ReportTypesComponent} from "./pages/report-types/report-types.component";
 
 const routes: Routes = [
   {

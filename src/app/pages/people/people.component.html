@@ -5,7 +5,7 @@
 <ng-container *ngIf="!loading">
   <h1>People</h1>
 
-  <app-table [config]="tableConfig" (emitter)="editPerson($event)"></app-table>
+  <app-table [displayedColumns]="displayedColumns" [dataSource]="dataSource" (emitter)="editPerson($event)"></app-table>
 
   <div class="row">
     <div class="col-12">

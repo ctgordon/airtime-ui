@@ -7,21 +7,21 @@ import {HttpService} from "./services/http.service";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AircraftComponent} from './components/aircraft/aircraft.component';
-import {HomeComponent} from './components/home/home.component';
+import {AircraftComponent} from './pages/aircraft/aircraft.component';
+import {HomeComponent} from './pages/home/home.component';
 import {RouterModule} from "@angular/router";
 import {APP_BASE_HREF} from "@angular/common";
 import {environment} from "../environments/environment";
-import {AirportsComponent} from './components/airports/airports.component';
-import {PeopleComponent} from './components/people/people.component';
-import {AircraftTypesComponent} from './components/aircraft-types/aircraft-types.component';
+import {AirportsComponent} from './pages/airports/airports.component';
+import {PeopleComponent} from './pages/people/people.component';
+import {AircraftTypesComponent} from './pages/aircraft-types/aircraft-types.component';
 import {TableComponent} from './elements/table/table.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {FlightsComponent} from './components/flights/flights.component';
+import {FlightsComponent} from './pages/flights/flights.component';
 import {ValidatedDropdownComponent} from './elements/validated-dropdown/validated-dropdown.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MAT_DATE_LOCALE, MatNativeDateModule, MatOptionModule} from "@angular/material/core";
@@ -31,14 +31,15 @@ import {ConfirmDialogComponent} from './dialogs/confirm-dialog/confirm-dialog.co
 import {MatTabsModule} from "@angular/material/tabs";
 import {GoogleSheetsImportComponent} from './components/google-sheets-import/google-sheets-import.component';
 import {FlightSummaryComponent} from './components/flight-summary/flight-summary.component';
-import {CustomReportsComponent} from './components/custom-reports/custom-reports.component';
+import {CustomReportsComponent} from './pages/custom-reports/custom-reports.component';
 import {MatSelectModule} from "@angular/material/select";
 import {ValidatedInputComponent} from './elements/validated-input/validated-input.component';
-import {ReportTypesComponent} from './components/report-types/report-types.component';
+import {ReportTypesComponent} from './pages/report-types/report-types.component';
 import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
 import { SwitchComponent } from './elements/switch/switch.component';
 import { GenericFormComponent } from './dialogs/generic-form/generic-form.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { GenericFormComponent } from './dialogs/generic-form/generic-form.compon
     MatSnackBarModule,
     MatTabsModule,
     FormsModule,
-    MatSortModule
+    MatSortModule,
+    MatPaginatorModule
   ],
   providers: [
     HttpService,

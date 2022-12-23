@@ -7,6 +7,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AircraftType} from "../../model/aircraftType";
 import {TableConfig} from "../../model/table.config";
 import {MatDialog} from "@angular/material/dialog";
+import {MatTableDataSource} from "@angular/material/table";
+import {Airport} from "../../model/airport";
 
 @Component({
   selector: 'app-aircraft',
@@ -15,20 +17,25 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class AircraftComponent implements OnInit, OnDestroy {
 
+  public displayedColumns = [
+    {id: 'id', title: 'ID'},
+    {id: 'tailNumber', title: 'Tail number'},
+    {id: 'type', title: 'Type'},
+  ];
+
+  public dataSource!: MatTableDataSource<any>;
+
   public aircraftList!: Aircraft[];
   public aircraftTypesList!: AircraftType[];
   public aircraftForm!: FormGroup;
-  public tableConfig: TableConfig = {
-    data: [],
-    headers: ['ID', 'Tail number', 'Type'],
-    editable: true,
-  };
+
   public loading: boolean = false;
 
   private aircraftSubscription!: Subscription;
   private aircraftTypesSubscription!: Subscription;
 
-  constructor(private httpService: HttpService, public dialog: MatDialog) {}
+  constructor(private httpService: HttpService, public dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.getAircraft();
@@ -45,14 +52,14 @@ export class AircraftComponent implements OnInit, OnDestroy {
       next: aircraft => {
         this.aircraftList = aircraft;
 
-        this.tableConfig.data = [];
+        const filtered: Array<{ id: string, tailNumber: string, type: string }> = [];
 
         this.aircraftList.forEach(aircraft => {
-          this.tableConfig.data.push({
-            obj: aircraft,
-            values: [aircraft.id, aircraft.tailNumber, aircraft.aircraftType.type]
-          });
+          filtered.push({id: aircraft.id, tailNumber: aircraft.tailNumber, type: aircraft.aircraftType.type})
         });
+
+        this.dataSource = new MatTableDataSource<any>(filtered);
+
         this.loading = false;
       },
       error: (e) => {
