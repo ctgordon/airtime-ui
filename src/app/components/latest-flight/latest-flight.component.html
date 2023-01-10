@@ -1,0 +1,25 @@
+<div *ngIf="loading" class="d-flex justify-content-center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-container *ngIf="!loading">
+  <div *ngIf="flight" class="card">
+    <h5 class="card-header"><i class="bi bi-airplane"></i> Latest flight</h5>
+    <div class="card-body">
+      <h5 class="card-title">{{flight?.departureDatetime | date : 'fullDate'}}</h5>
+
+      <ul>
+        <li>{{flight?.aircraft?.tailNumber}}</li>
+        <li>{{flight?.departureDatetime | date : 'HH:mm:ss'}}
+          to {{flight?.arrivalDatetime | date : 'HH:mm:ss'}}</li>
+        <li>{{flight?.departureAirport?.airportName}} to {{flight?.arrivalAirport?.airportName}}</li>
+        <li>{{duration}} hour</li>
+        <li>{{weeksSince}} weeks ago</li>
+        <li>{{daysSince}} days ago</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="#" class="btn btn-primary">Go to flight</a>
+    </div>
+  </div>
+</ng-container>

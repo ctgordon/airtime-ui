@@ -43,6 +43,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import { SelectAircraftTypeComponent } from './components/select-aircraft-type/select-aircraft-type.component';
 import { SelectPilotInCommandComponent } from './components/select-pilot-in-command/select-pilot-in-command.component';
 import { SelectAirportComponent } from './components/select-airport/select-airport.component';
+import { LatestFlightComponent } from './components/latest-flight/latest-flight.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { SelectAirportComponent } from './components/select-airport/select-airpo
     SelectAircraftTypeComponent,
     SelectPilotInCommandComponent,
     SelectAirportComponent,
+    LatestFlightComponent,
   ],
   imports: [
     BrowserModule,

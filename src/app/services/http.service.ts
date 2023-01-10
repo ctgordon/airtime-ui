@@ -68,6 +68,10 @@ export class HttpService {
     return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/flights/`);
   }
 
+  getLatestFlight(): Observable<Flight> {
+    return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/latest-flight/`);
+  }
+
   getFlightSummary(): Observable<FlightSummary> {
     return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/flight-summary`);
   }
