@@ -45,6 +45,7 @@ import { SelectPilotInCommandComponent } from './components/select-pilot-in-comm
 import { SelectAirportComponent } from './components/select-airport/select-airport.component';
 import { LatestFlightComponent } from './components/latest-flight/latest-flight.component';
 import { NextFlightComponent } from './components/next-flight/next-flight.component';
+import { PersonProfileComponent } from './components/person-profile/person-profile.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { NextFlightComponent } from './components/next-flight/next-flight.compon
     SelectAirportComponent,
     LatestFlightComponent,
     NextFlightComponent,
+    PersonProfileComponent,
   ],
   imports: [
     BrowserModule,

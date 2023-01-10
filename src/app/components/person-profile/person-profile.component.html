@@ -1,0 +1,19 @@
+<div *ngIf="loading" class="d-flex justify-content-center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-container *ngIf="!loading">
+  <div class="card">
+    <h5 class="card-header"><i class="bi bi-person"></i> Profile</h5>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">{{weight?.kg}} kg</li>
+      <li class="list-group-item">{{weight?.lb}} lbs</li>
+      <li class="list-group-item">{{weight?.stones}} stones {{weight?.remainder}} lbs</li>
+    </ul>
+
+    <div class="card-footer">
+      <a href="#" class="btn btn-primary">Go to person</a>
+    </div>
+  </div>
+</ng-container>

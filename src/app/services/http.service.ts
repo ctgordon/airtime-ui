@@ -60,6 +60,10 @@ export class HttpService {
     return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/airports/`);
   }
 
+  getPerson(): Observable<Person> {
+    return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/people/1`);
+  }
+
   getPeople(): Observable<Array<Person>> {
     return this.getData(`${environment.apiServer}${environment.app}${environment.endpoint}/people/`);
   }

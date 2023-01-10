@@ -107,7 +107,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
   save() {
     this.loading = true;
 
-    const person: Person = {id: 0, moniker: "", name: "", personRole: {id: 0, role: ''}};
+    const person: { name: string; personRole: { role: string; id: number }; id: number; moniker: string } = {id: 0, moniker: "", name: "", personRole: {id: 0, role: ''}};
 
     if (this.peopleForm.valid) {
       person.id = this.id.value;
