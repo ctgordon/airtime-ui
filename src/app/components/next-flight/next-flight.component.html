@@ -1,0 +1,12 @@
+<div *ngIf="loading" class="d-flex justify-content-center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-container *ngIf="!loading">
+  <div class="card">
+    <h5 class="card-header"><i class="bi bi-airplane"></i> Next flight</h5>
+    <div class="card-body">
+      <p class="card-text">To do</p>
+    </div>
+  </div>
+</ng-container>
